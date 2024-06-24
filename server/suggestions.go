@@ -18,51 +18,58 @@ var (
 	// base level kf completion items
 	kfCompletionItems = []lsp.CompletionItem{
 		{ // table declaration
-			Label:            "table {name} {columns...}",
+			Label:            "table name {columns..}",
 			Kind:             lsp.CIKClass,
 			InsertText:       "table ${1:name} {\n\t${2:columns}\n}",
 			InsertTextFormat: lsp.ITFSnippet,
 		},
 		{ // action declaration
-			Label:            "action {name}({params}) {modifiers} {{body}}",
+			Label:            "action name(params...) modifiers {body}",
 			Kind:             lsp.CIKClass,
 			InsertText:       "action ${1:name}(${2:params}) ${3:modifiers} {\n\t${4:body}\n}",
 			InsertTextFormat: lsp.ITFSnippet,
 		},
 		{ // use declaration
-			Label:            "use {module} {} as {alias};",
+			Label:            "use ext {data} as alias;",
 			Kind:             lsp.CIKClass,
-			InsertText:       "use ${1:module} {\n} as ${2:alias};",
+			InsertText:       "use ${1:module} {\n\t${2:kvpairs}\n} as ${3:alias};",
 			InsertTextFormat: lsp.ITFSnippet,
 		},
 		{ // procedure declaration without return type
-			Label:            "procedure {name}({params}) {modifiers} {body}",
+			Label:            "procedure name(params...) modifiers {body}",
 			Kind:             lsp.CIKClass,
 			InsertText:       "procedure ${1:name}(${2:params}) ${3:modifiers}  {\n\t${4:body}\n}",
 			InsertTextFormat: lsp.ITFSnippet,
 		},
 		{ // procedure declaration with return type
-			Label:            "procedure {name}({params}) {modifiers} returns ({return_vals}) {body}",
+			Label:            "procedure name(params...) modifiers returns (return_vals...) {body}",
 			Kind:             lsp.CIKClass,
 			InsertText:       "procedure ${1:name}(${2:params}) ${3:modifiers} returns (${4:return_vals}) {\n\t${5:body}\n}",
 			InsertTextFormat: lsp.ITFSnippet,
 		},
 		{ // procedure declaration with table return type
-			Label:            "procedure {name}({params}) {modifiers} returns table({return_vals}) {body}",
+			Label:            "procedure name(params...) modifiers returns table(return_vals...) {body}",
 			Kind:             lsp.CIKClass,
 			InsertText:       "procedure ${1:name}(${2:params}) ${3:modifiers} returns table(${4:return_vals}) {\n\t${5:body}\n}",
 			InsertTextFormat: lsp.ITFSnippet,
 		},
-		{ // foreign procedure declaration
-			Label:            "foreign procedure {name}({params}) returns ({return_type});",
+		{
+			// foreign procedure declaration without return type
+			Label:            "foreign procedure name(params...) modifiers",
 			Kind:             lsp.CIKClass,
-			InsertText:       "foreign procedure ${1:name}(${2:params}) returns (${3:return_type});",
+			InsertText:       "foreign procedure ${1:name}(${2:params}) ${3:modifiers}",
+			InsertTextFormat: lsp.ITFSnippet,
+		},
+		{ // foreign procedure declaration
+			Label:            "foreign procedure name(params...) returns (return_types...)",
+			Kind:             lsp.CIKClass,
+			InsertText:       "foreign procedure ${1:name}(${2:params}) returns (${3:return_type})",
 			InsertTextFormat: lsp.ITFSnippet,
 		},
 		{ // foreign procedure declaration  with table return type
-			Label:            "foreign procedure {name}({params}) returns table({return_type});",
+			Label:            "foreign procedure name(params...) returns table(return_types...)",
 			Kind:             lsp.CIKClass,
-			InsertText:       "foreign procedure ${1:name}(${2:params}) returns table(${3:return_type});",
+			InsertText:       "foreign procedure ${1:name}(${2:params}) returns table(${3:return_type})",
 			InsertTextFormat: lsp.ITFSnippet,
 		},
 	}
@@ -110,27 +117,21 @@ var (
 			InsertTextFormat: lsp.ITFSnippet,
 		},
 		{ // foreign key declaration
-			Label:            "foreign key {column} references {table}({column}) on {delete|update} {action}",
+			Label:            "foreign key column references table(column)",
+			Kind:             lsp.CIKClass,
+			InsertText:       "foreign key ${1:column} references ${2:table}(${3:column})",
+			InsertTextFormat: lsp.ITFSnippet,
+		},
+		{ // foreign key declaration with on delete|update action
+			Label:            "foreign key column references table(column) on delete|update action",
 			Kind:             lsp.CIKClass,
 			InsertText:       "foreign key ${1:column} references ${2:table}(${3:column}) on ${4:delete|update} ${5:action}",
 			InsertTextFormat: lsp.ITFSnippet,
 		},
-		{ // standard index declaration
-			Label:            "#{index_name} index({columns...})",
+		{ // index declaration
+			Label:            "#index_name index|unique|primary(columns...)",
 			Kind:             lsp.CIKClass,
-			InsertText:       "#${1:index_name} index(${2:columns})",
-			InsertTextFormat: lsp.ITFSnippet,
-		},
-		{ // unique index declaration
-			Label:            "#{index_name} unique({columns...})",
-			Kind:             lsp.CIKClass,
-			InsertText:       "#${1:index_name} unique(${2:columns})",
-			InsertTextFormat: lsp.ITFSnippet,
-		},
-		{ // primary index declaration
-			Label:            "#{index_name} primary({columns...})",
-			Kind:             lsp.CIKClass,
-			InsertText:       "#${1:index_name} primary(${2:columns})",
+			InsertText:       "${1:index_name} ${2:index|primary|unqiue}(${3:columns})",
 			InsertTextFormat: lsp.ITFSnippet,
 		},
 	}, tableKeywordsCompletionItems...)
@@ -341,45 +342,45 @@ var (
 	sqlKeywordsCompletionItems = append(getDefaultCompletionItems(sqlKeywords),
 		[]lsp.CompletionItem{
 			{ // insert statement
-				Label:            "insert into {table} ({columns}) values ({values})",
+				Label:            "insert into table (columns...) values (values...)",
 				Kind:             lsp.CIKClass,
 				InsertText:       "insert into ${1:table} (${2:columns})\n\tvalues (${3:values});",
 				InsertTextFormat: lsp.ITFSnippet,
 			},
 			{ // update statement
-				Label:            "update {table} set {column} = {value} where {condition}",
+				Label:            "update table set (column = value) where {condition}",
 				Kind:             lsp.CIKClass,
 				InsertText:       "update ${1:table} set ${2:column} = ${3:value} where ${4:condition};",
 				InsertTextFormat: lsp.ITFSnippet,
 			},
 			{ // select statement
-				Label:            "select {columns} from {table} where {condition}",
+				Label:            "select (columns...) from table where {condition}",
 				Kind:             lsp.CIKClass,
 				InsertText:       "select ${1:columns} from ${2:table} where ${3:condition}",
 				InsertTextFormat: lsp.ITFSnippet,
 			},
 			{ // delete statement
-				Label:            "delete from {table} where {condition}",
+				Label:            "delete from table where {condition}",
 				Kind:             lsp.CIKClass,
 				InsertText:       "delete from ${1:table} where ${2:condition};",
 				InsertTextFormat: lsp.ITFSnippet,
 			},
 			{ // on conflict clause
-				Label:            "on conflict ({column}) do {update|nothing}",
+				Label:            "on conflict (column) do {update|nothing}",
 				Kind:             lsp.CIKClass,
 				InsertText:       "on conflict (${1:column}) do ${2:update|nothing};",
 				InsertTextFormat: lsp.ITFSnippet,
 			},
 			{ // conflict clause
-				Label:            "conflict ({column}) do {update|nothing}",
+				Label:            "conflict (column) do {update|nothing}",
 				Kind:             lsp.CIKClass,
 				InsertText:       "conflict (${1:column}) do ${2:update|nothing};",
 				InsertTextFormat: lsp.ITFSnippet,
 			},
 			{ // do update clause
-				Label:            "do update set {column} = {expression}",
+				Label:            "do update set {column} = {value}",
 				Kind:             lsp.CIKClass,
-				InsertText:       "do update set ${1:column} = ${2:expression};",
+				InsertText:       "do update set ${1:} = ${2:};",
 				InsertTextFormat: lsp.ITFSnippet,
 			},
 		}...,
@@ -387,28 +388,19 @@ var (
 
 	controlFlowCompletionItems = []lsp.CompletionItem{
 		{ // if statement
-			Label:            "if {condition} {body} else {body}",
-			Kind:             lsp.CIKSnippet,
-			InsertText:       "if ${1:condition} {\n\t${2:body}\n} else {\n\t${3:body}\n}",
-			InsertTextFormat: lsp.ITFSnippet,
+			Label:      "if",
+			Kind:       lsp.CIKKeyword,
+			InsertText: "if",
 		},
 		{ // else if statement
-			Label:            "else if {condition} {body}",
-			Kind:             lsp.CIKSnippet,
-			InsertText:       "else if ${1:condition} {\n\t${2:body}\n}",
-			InsertTextFormat: lsp.ITFSnippet,
+			Label:      "elseif",
+			Kind:       lsp.CIKKeyword,
+			InsertText: "elseif",
 		},
-		{ // else statement
-			Label:            "else {body}",
-			Kind:             lsp.CIKSnippet,
-			InsertText:       "else {\n\t${1:body}\n}",
-			InsertTextFormat: lsp.ITFSnippet,
-		},
-		{ // for loop
-			Label:            "for {val} in {vales} {body}",
-			Kind:             lsp.CIKSnippet,
-			InsertText:       "for ${1:val} in ${2:values} {\n\t${3:body}\n}",
-			InsertTextFormat: lsp.ITFSnippet,
+		{ // else if statement
+			Label:      "for",
+			Kind:       lsp.CIKKeyword,
+			InsertText: "for",
 		},
 		{ // break statement
 			Label:      "break",

@@ -107,7 +107,7 @@
 	"procedures": {
 		"patterns": [
 			{
-				"match": "\\b(procedure)\\s+([\\w_]+)\\s*\\(([^)]*)\\)([^)]*)?\\(?([^)]*)?\\)?\\s*{?\\s*(//.*)?",
+				"match": "\\b(procedure)\\s+([\\w_]+)\\s*\\(([^)]*)\\)([^)(]*)?\\(?([^)]*)?\\)?\\s*{?\\s*(//.*)?",
 				"captures": {
 					"1": { "name": "keyword.kf.types" },
 					"2": { "name": "entity.kf.name" },
@@ -134,7 +134,9 @@
 			},
 			{"include": "#comments"},
 			{"include": "#return"},
-			{"include": "#contextual"}
+			{"include": "#contextual"},
+			{"include": "#sqlKeywords"}
+
 		]
 	},
 	"fprocedures":{
@@ -147,26 +149,14 @@
 					"3": { "name": "entity.name.column" },
 					"4": {
 						"patterns": [
-							{
-								"match": "\\b([a-zA-Z_][a-zA-Z0-9_$]*)?\\s*\\b([a-zA-Z_][a-zA-Z0-9_]*)",
-								"captures": {
-									"1": { "name": "entity.name.attribute" },
-									"2": { "name": "storage.kf.types" }
-								}
-							}
+							{"include": "#fnArgs"}
 						]
 					},
 					"5": { "name": "entity.kf.modifiers" },
 					"6": { "name": "storage.kf.attributes" },
 					"7": {
 						"patterns": [
-							{
-								"match": "\\b([a-zA-Z_][a-zA-Z0-9_]*)?\\s*\\b([a-zA-Z_][a-zA-Z0-9_]*)",
-								"captures": {
-									"1": { "name": "entity.name.attribute" },
-									"2": { "name": "storage.kf.types" }
-								}
-							}
+							{"include": "#returnArgs"}
 						]
 					},
 					"8": { "name": "comment.line.double-slash.kuneiform" }
@@ -268,7 +258,7 @@
 		"patterns": [
 			{
 				"name": "keyword.control.sql",
-				"match": "(?<!\\$)\\b(?:ABORT|ADD|ALL|AND|AS|ASC|BETWEEN|BY|CASE|COLLATE|COMMIT|CONFLICT|CREATE|CROSS|DEFAULT|DELETE|DESC|DISTINCT|ELSE|END|ESCAPE|EXCEPT|EXISTS|FAIL|FROM|FULL|GLOB|GROUP|HAVING|IGNORE|IN|INDEXED|INNER|INSERT|INTERSECT|INTO|IS|ISNULL|JOIN|LEFT|LIKE|LIMIT|MATCH|NATURAL|NOT|NULL|OF|OFFSET|ON|OR|ORDER|OUTER|RAISE|REGEXP|REPLACE|RETURNING|RIGHT|ROLLBACK|SELECT|SET|THEN|UNION|UPDATE|USING|VALUES|WHEN|WHERE|WITH|TRUE|FALSE|NULLS|FIRST|LAST|FILTER|GROUPS|DO|NOTHING|abort|add|all|and|as|asc|between|by|case|collate|commit|conflict|create|cross|default|delete|desc|distinct|else|end|escape|except|exists|fail|from|full|glob|group|having|ignore|in|indexed|inner|insert|intersect|into|is|isnull|join|left|like|limit|match|natural|not|null|of|offset|on|or|order|outer|raise|regexp|replace|returning|right|rollback|select|set|then|union|update|using|values|when|where|with|true|false|nulls|first|last|filter|groups|do|nothing|delete|update)\\b"
+				"match": "(?<!\\$)\\b(?:ABORT|ADD|ALL|AND|AS|ASC|BETWEEN|BY|CASE|COLLATE|COMMIT|CONFLICT|CREATE|CROSS|DEFAULT|DELETE|DESC|DISTINCT|ELSE|END|ESCAPE|EXCEPT|EXISTS|FAIL|FROM|FULL|GLOB|GROUP|HAVING|IGNORE|IN|INDEXED|INNER|INSERT|INTERSECT|INTO|IS|ISNULL|JOIN|LEFT|LIKE|LIMIT|MATCH|NATURAL|NOT|NULL|OF|OFFSET|ON|OR|ORDER|OUTER|RAISE|REGEXP|REPLACE|RETURNING|RIGHT|ROLLBACK|SELECT|SET|THEN|UNION|UPDATE|USING|VALUES|WHEN|WHERE|WITH|TRUE|FALSE|NULLS|FIRST|LAST|FILTER|GROUPS|DO|NOTHING|abort|add|all|and|as|asc|between|by|case|collate|commit|conflict|create|cross|default|delete|desc|distinct|end|escape|except|exists|fail|from|full|glob|group|having|ignore|in|indexed|inner|insert|intersect|into|is|isnull|join|left|like|limit|match|natural|not|null|of|offset|on|or|order|outer|raise|regexp|replace|returning|right|rollback|select|set|then|union|update|using|values|when|where|with|true|false|nulls|first|last|filter|groups|do|nothing|delete|update)\\b"
 			  }
 		]
 	},
