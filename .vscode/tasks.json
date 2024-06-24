@@ -1,0 +1,23 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+      {
+        "label": "build-go",
+        "type": "shell",
+        "command": "go",
+        "args": [
+          "build",
+          "-o",
+          "${workspaceFolder}/server/kuneiform-lsp",
+          "${workspaceFolder}/server"
+        ],
+        "group": {
+          "kind": "build",
+          "isDefault": true
+        },
+        "problemMatcher": ["$go"],
+        "detail": "Build the Go language server"
+      }
+    ]
+  }
+  

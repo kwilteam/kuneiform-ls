@@ -1,0 +1,70 @@
+{
+	"name": "kuneiform",
+	"displayName": "Kuneiform",
+	"description": "Language support for Kuneiform",
+	"version": "0.0.1",
+	"publisher": "charithabandi",
+	"engines": {
+		"vscode": "^1.75.0"
+	},
+	"activationEvents": [],
+	"main": "./client/client.js",
+	"contributes": {
+		"languages": [
+			{
+				"id": "kuneiform",
+				"aliases": [
+					"Kuneiform",
+					"kuneiform"
+				],
+				"extensions": [
+					".kf"
+				],
+				"configuration": "./syntaxes/language-configuration.json"
+			}
+		],
+		"grammars": [
+			{
+				"language": "kuneiform",
+				"scopeName": "source.kuneiform",
+				"path": "./syntaxes/kuneiform.tmLanguage.json"
+			}
+		],
+		"themes": [
+      		{
+        		"label": "Kuneiform Theme",
+        		"uiTheme": "vs-dark",
+       			"path": "./syntaxes/kuneiform.theme.json"
+			}
+    	],
+		"semanticTokenTypes": [
+			{
+				"id": "variable",
+				"supertype": "variable"
+			},
+			{
+				"id": "function",
+				"supertype": "function"
+			},
+			{
+				"id": "class",
+				"supertype": "class"
+			},
+			{
+				"id": "keyword",
+				"supertype": "keyword"
+			},
+			{
+				"id": "database",
+				"supertype": "database"
+			}
+		],
+		"semanticTokenModifiers": []
+	},
+	"scripts": {
+		"postinstall": "node ./node_modules/vscode/bin/install"
+	},
+	"dependencies": {
+		"vscode-languageclient": "^7.0.0"
+	}
+}

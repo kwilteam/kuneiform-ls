@@ -1,0 +1,29 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Launch Client",
+      "type": "extensionHost",
+      "request": "launch",
+      "runtimeExecutable": "${execPath}",
+      "args": [
+        "--extensionDevelopmentPath=${workspaceFolder}"
+      ],
+      "outFiles": [
+        "${workspaceFolder}/client/out/**/*.js"
+      ],
+      "preLaunchTask": "build-go"
+    },
+    {
+      "name": "Debug Go Server",
+      "type": "go",
+      "request": "launch",
+      "mode": "auto",
+      "program": "${workspaceFolder}/server ",
+      "cwd": "${workspaceFolder}/server",
+      "env": {},
+      "args": ["--loglevel", "debug"],
+      "showLog": true
+    }
+  ]
+}
