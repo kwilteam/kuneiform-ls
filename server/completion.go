@@ -1,6 +1,8 @@
 package main
 
 import (
+	"log/slog"
+
 	"github.com/kwilteam/kwil-db/parse"
 	"github.com/sourcegraph/go-lsp"
 )
@@ -15,6 +17,9 @@ func (l *lspHandler) getCompletionItems(r *parse.SchemaParseResult, pos int) []l
 	inActions := isWithinActionBlock(r, pos)
 	inForeginProcedures := isWithinForeignProcedureBlock(r, pos)
 	dbDefined := getDatabaseName(r) != ""
+
+	l.logger.Debug("Parse result: ", slog.Bool("dbDefined", dbDefined), slog.Bool("inTable", inTable), slog.Bool("inProcedures", inProcedures), slog.Bool("inActions", inActions), slog.Bool("inForeginProcedures", inForeginProcedures))
+
 	tables := getTableCompletionItems(r)
 	params := getParamsCompletionItems(r, pos)
 	procedures := getProcedureCompletionItems(r, pos)

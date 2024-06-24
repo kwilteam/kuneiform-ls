@@ -1,3 +1,0 @@
-{
-    "kfLanguageServer.port": 5002 // Port to launch the kf language server on, currently the language server can't handle multiple workspaces
-}

@@ -156,17 +156,21 @@ func (l *lspHandler) handleCompletion(ctx context.Context, conn *jsonrpc2.Conn, 
 	}
 
 	items := l.getCompletionItems(doc.parsedSchema, offset)
-	// l.logger.Info("Completion items: ", slog.Any("items", items))
 	l.printSuggestions(items)
 	conn.Reply(ctx, req.ID, items)
 }
 
 func (l *lspHandler) printSuggestions(items []lsp.CompletionItem) {
+	// Optimization: Skip if log level is info, warn or error
+	if logLevel.Level() >= slog.LevelInfo {
+		return
+	}
+
 	var labels []string
 	for _, item := range items {
 		labels = append(labels, item.Label)
 	}
-	l.logger.Info("Suggestions: ", slog.Any("", labels))
+	l.logger.Debug("Suggestions: ", slog.Any("", labels))
 }
 
 func (l *lspHandler) validateKfDocument(uri string, text string) (*parse.SchemaParseResult, []lsp.Diagnostic) {

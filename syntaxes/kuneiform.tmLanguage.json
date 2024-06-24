@@ -76,7 +76,9 @@
                             "3": { "name": "keyword.kf.pk" },
                             "4": { 
 								"patterns": [
-									{"include": "#attributes"}
+									{"include": "#attributes"},
+									{"include": "#boolean"},
+									{"include": "#numbers"}
 								]
 							},
 							"5": { "name": "delimiter.comma" },
@@ -101,7 +103,9 @@
 			},
 			{"include": "#comments"},
 			{"include": "#return"},
-			{"include": "#contextual"}
+			{"include": "#contextual"},
+			{"include": "#numbers"},
+			{"include": "#boolean"}
 		]
 	},
 	"procedures": {
@@ -135,8 +139,9 @@
 			{"include": "#comments"},
 			{"include": "#return"},
 			{"include": "#contextual"},
-			{"include": "#sqlKeywords"}
-
+			{"include": "#sqlKeywords"},
+			{"include": "#numbers"},
+			{"include": "#boolean"}
 		]
 	},
 	"fprocedures":{
@@ -225,6 +230,10 @@
 	"comments": {
 		"patterns": [
 			{
+				"match": "//\\s*TODO:.*$",
+				"name": "comment.TODO.kuneiform"
+			},
+			{
 				"match": "//.*$",
 				"name": "comment.line.double-slash.kuneiform"
 			}
@@ -303,6 +312,22 @@
 				"captures": {
 					"1": { "name": "keyword.other.contextual.kuneiform" }
 				}
+			}
+		]
+	},
+	"numbers": {
+		"patterns": [
+			{
+				"match": "\\b(\\d+)\\b",
+				"name": "constant.numeric.kuneiform"
+			}
+		]
+	},
+	"boolean": {
+		"patterns": [
+			{
+				"match": "\\b(true|false)\\b",
+				"name": "constant.boolean.kuneiform"
 			}
 		]
 	}

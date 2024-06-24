@@ -37,34 +37,23 @@
        			"path": "./syntaxes/kuneiform.theme.json"
 			}
     	],
-		"semanticTokenTypes": [
-			{
-				"id": "variable",
-				"supertype": "variable"
-			},
-			{
-				"id": "function",
-				"supertype": "function"
-			},
-			{
-				"id": "class",
-				"supertype": "class"
-			},
-			{
-				"id": "keyword",
-				"supertype": "keyword"
-			},
-			{
-				"id": "database",
-				"supertype": "database"
+		"configuration": {
+			"type": "object",
+			"title": "Kuneiform",
+			"properties": {
+				"kuneiform.logLevel": {
+					"type": "string",
+					"enum": ["debug", "info", "warn", "error"],
+					"default": "info",
+					"description": "Set the log level for the Kuneiform language server."
+				}
 			}
-		],
-		"semanticTokenModifiers": []
+		}
 	},
 	"scripts": {
 		"postinstall": "node ./node_modules/vscode/bin/install"
 	},
 	"dependencies": {
-		"vscode-languageclient": "^7.0.0"
+		"vscode-languageclient": "1.0.0"
 	}
 }

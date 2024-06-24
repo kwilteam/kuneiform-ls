@@ -4,9 +4,22 @@ const { LanguageClient, TransportKind } = require('vscode-languageclient/node');
 
 function activate(context) {
     let serverModule = path.join(__dirname, '..', 'server', 'kuneiform-lsp');
+
+    // Get the log level from the kuneiform extension configuration
+    const config = workspace.getConfiguration('kuneiform');
+    const logLevel = config.get('logLevel', 'info');
+
     let serverOptions = {
-        run: { command: serverModule, transport: TransportKind.stdio },
-        debug: { command: serverModule, transport: TransportKind.stdio }
+        run: {
+            command: serverModule,
+            args: ['-loglevel', logLevel],
+            transport: TransportKind.stdio
+        },
+        debug: {
+            command: serverModule,
+            args: ['-loglevel', logLevel],
+            transport: TransportKind.stdio
+        }
     };
 
     let clientOptions = {

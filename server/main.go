@@ -14,7 +14,11 @@ import (
 
 const (
 	lsDir   = ".kwil-ls"
-	logFile = "kf-lsp.log"
+	logFile = "lsp.log"
+)
+
+var (
+	logLevel = &slog.LevelVar{}
 )
 
 type stdioRWC struct{}
@@ -35,7 +39,6 @@ func main() {
 	ctx := context.Background()
 
 	// Initialize logger
-	logLevel := &slog.LevelVar{}
 	flag.TextVar(logLevel, "loglevel", logLevel, "debug/info/warn/error")
 	flag.Parse()
 	logger := getLogger(logLevel)

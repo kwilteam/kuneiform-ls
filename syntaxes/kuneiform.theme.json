@@ -37,6 +37,12 @@
             }
         },
         {
+            "scope": "comment.TODO.kuneiform",
+            "settings": {
+                "foreground": "#FF5722"
+            }
+        },
+        {
             "scope": "storage.kf.types",
             "settings": {
                 "foreground": "#48C9B0"
@@ -124,6 +130,18 @@
             "scope": "entity.name.function",
             "settings": {
                 "foreground": "#F9A825"
+            }
+        },
+        {
+            "scope": "constant.boolean.kuneiform",
+            "settings": {
+                "foreground": "#0066FF"
+            }
+        },
+        {
+            "scope": "constant.numeric.kuneiform",
+            "settings": {
+                "foreground": "#4DD0E1"
             }
         }
     ]
