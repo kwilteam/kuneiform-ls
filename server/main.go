@@ -2,9 +2,7 @@ package main
 
 import (
 	"context"
-	"flag"
 	"fmt"
-	"log"
 	"log/slog"
 	"os"
 	"path/filepath"
@@ -17,9 +15,7 @@ const (
 	logFile = "lsp.log"
 )
 
-var (
-	logLevel = &slog.LevelVar{}
-)
+var logLevel = &slog.LevelVar{}
 
 type stdioRWC struct{}
 
@@ -37,10 +33,7 @@ func (s *stdioRWC) Write(p []byte) (n int, err error) {
 
 func main() {
 	ctx := context.Background()
-
-	// Initialize logger
-	flag.TextVar(logLevel, "loglevel", logLevel, "debug/info/warn/error")
-	flag.Parse()
+	logLevel.Set(slog.LevelDebug)
 	logger := getLogger(logLevel)
 
 	// Initialize the language server  and register the handlers
@@ -70,14 +63,15 @@ func getLogger(level *slog.LevelVar) *slog.Logger {
 	logDir := filepath.Join(homedir, lsDir)
 	err = os.MkdirAll(logDir, 0755)
 	if err != nil {
-		fmt.Fprintln(os.Stderr, "Error creating log directory")
+		fmt.Fprintf(os.Stderr, "error creating log directory %s", logDir)
 		os.Exit(1)
 	}
 
 	logFile := filepath.Join(logDir, logFile)
 	file, err := os.OpenFile(logFile, os.O_CREATE|os.O_TRUNC|os.O_WRONLY, 0666)
 	if err != nil {
-		log.Fatal(err)
+		fmt.Fprintf(os.Stderr, "error creating log file %s", logFile)
+		os.Exit(1)
 	}
 
 	handler := slog.NewTextHandler(file, &slog.HandlerOptions{Level: level})

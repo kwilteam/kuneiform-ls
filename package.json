@@ -35,32 +35,17 @@
 				"path": "./syntaxes/kuneiform.tmLanguage.json"
 			}
 		],
-		"themes": [
-      		{
-        		"label": "Kuneiform Theme",
-        		"uiTheme": "vs-dark",
-       			"path": "./syntaxes/kuneiform.theme.json"
-			}
-    	],
 		"configuration": {
 			"type": "object",
-			"title": "Kuneiform",
-			"properties": {
-				"kuneiform.logLevel": {
-					"type": "string",
-					"enum": ["debug", "info", "warn", "error"],
-					"default": "info",
-					"description": "Set the log level for the Kuneiform language server."
-				}
-			}
+			"title": "Kuneiform"
 		}
 	},
 	"scripts": {
-		"postinstall": "node ./node_modules/vscode/bin/install"
+		"build-kf-client": "npm install vscode-languageclient",
+		"build-kf-server": "cd server && ./build.sh",
+		"build": "npm run build-kf-server && npm run build-kf-client"
 	},
-	"devDependencies": {
-		"@types/node": "^20.14.5",
-		"typescript": "^4.1.3",
-		"vsce": "^1.94.0"
+	"dependencies": {
+		"vscode-languageclient": "^9.0.1"
 	}
 }

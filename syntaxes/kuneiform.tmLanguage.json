@@ -29,8 +29,8 @@
 			{
 				"match": "\\b(database)\\s+([a-zA-Z_][a-zA-Z0-9_]*)\\s*;",
 				"captures": {
-					"1": { "name": "keyword.kf.types" },
-					"2": { "name": "entity.db.name" }
+					"1": { "name": "keyword.type.database.kuneiform" },
+					"2": { "name": "entity.name.type.kuneiform" }
 				}
 			}
 		]
@@ -41,39 +41,38 @@
                 "begin": "\\b(table)\\s+([a-zA-Z_][a-zA-Z0-9_]*)\\s*\\{",
                 "end": "\\}",
                 "beginCaptures": {
-                    "1": { "name": "keyword.kf.types" },
-                    "2": { "name": "entity.kf.name" }
+                    "1": { "name": "keyword.type.table.kuneiform" },
+                    "2": { "name": "entity.name.function.table.kuneiform" }
                 },
                 "patterns": [
                     { "include": "#comments"},
                     {
                         "match": "(#[a-zA-Z_][a-zA-Z0-9_]*)\\s+(unique|index|primary)\\s*.*?(//.*)?",
                         "captures": {
-                            "1": { "name": "entity.name.index" },
-                            "2": { "name": "entity.kf.name" },
+                            "1": { "name": "entity.name.section.index.kuneiform" },
+                            "2": { "name": "entity.name.operator.modifiers.kuneiform" },
 							"3": { "name": "comment.line.double-slash.kuneiform" }
                         }
                     },
 					{
-						"match": "(foreign)\\s+(key)\\s+\\(([a-zA-Z_][a-zA-Z0-9_]*)\\)\\s+(references)\\s+([a-zA-Z_][a-zA-Z0-9_]*)(\\s*\\(([a-zA-Z_][a-zA-Z0-9_]*)\\)\\s*(on\\s+update|on\\s+delete)?(\\s+[^;/,]*)?\\s*)?,?(\\s*//.*)?",
+						"match": "\\b(foreign key|fk|foreign_key)\\s*\\(([a-zA-Z_][a-zA-Z0-9_]*)\\)\\s+(references)\\s+([a-zA-Z_][a-zA-Z0-9_]*)(\\s*\\(([a-zA-Z_][a-zA-Z0-9_]*)\\)\\s*(on\\s+update|on\\s+delete)?(\\s+[^;/,]*)?\\s*)?,?(\\s*//.*)?",
 						"captures": {
-							"1": { "name": "keyword.kf.foreign" },
-							"2": { "name": "storage.kf.types" },
-							"3": { "name": "entity.name.column" },
-							"4": { "name": "keyword.kf.refs" },
-							"5": { "name": "entity.name.table" },
-							"7": { "name": "entity.name.column.refs" },
-							"8": { "name": "storage.kf.attributes" },
-							"9": { "name": "entity.name.fk.actions" },
-							"10": { "name": "comment.line.double-slash.kuneiform" }
+							"1": { "name": "storage.kf.types.kuneiform"  },
+							"2": { "name": "entity.name.column" },
+							"3": { "name": "keyword.kf.refs" },
+							"4": { "name": "entity.name.table" },
+							"6": { "name": "entity.name.column.refs" },
+							"7": { "name": "storage.kf.attributes" },
+							"8": { "name": "entity.name.fk.actions" },
+							"9": { "name": "comment.line.double-slash.kuneiform" }
 						}
 					},
 					{
                         "match": "\\b([a-zA-Z_][a-zA-Z0-9_]*)\\s+([a-zA-Z_][a-zA-Z0-9_]*)\\s*(primary key|primary|pk|primary_key)?(\\s*\\b[^;/,]*)?\\s*?(\\s*,\\s*)?(//.*)?$",
                         "captures": {
                             "1": { "name": "entity.name.column" },
-                            "2": { "name": "storage.kf.types" },
-                            "3": { "name": "keyword.kf.pk" },
+                            "2": { "name": "support.type.kuneiform" },
+                            "3": { "name": "entity.name.operator.modifiers.kuneiform" },
                             "4": { 
 								"patterns": [
 									{"include": "#attributes"},
@@ -94,10 +93,10 @@
 			{
 				"match": "\\b(action)\\s+([a-zA-Z_][a-zA-Z0-9_]*)\\s*\\(([^)]*)\\)\\s*([^{/]*)\\s*\\{\\s*(//.*)?",
 				"captures": {
-					"1": { "name": "keyword.kf.types" },
-					"2": { "name": "entity.kf.name" },
+					"1": { "name": "keyword.type.table.kuneiform" },
+					"2": { "name": "entity.name.function.table.kuneiform" },
 					"3": { "name": "variable.parameter.kuneiform" },
-					"4": { "name": "entity.kf.modifiers"},
+					"4": { "name": "entity.name.operator.modifiers.kuneiform"},
 					"5": { "name": "comment.line.double-slash.kuneiform" }
 				}
 			},
@@ -113,8 +112,8 @@
 			{
 				"match": "\\b(procedure)\\s+([\\w_]+)\\s*\\(([^)]*)\\)([^)(]*)?\\(?([^)]*)?\\)?\\s*{?\\s*(//.*)?",
 				"captures": {
-					"1": { "name": "keyword.kf.types" },
-					"2": { "name": "entity.kf.name" },
+					"1": { "name": "keyword.type.table.kuneiform" },
+					"2": { "name": "entity.name.function.table.kuneiform" },
 					"3": { 
 						"patterns": [
 							{"include": "#fnArgs"}
@@ -149,16 +148,16 @@
 			{
 				"match": "\\b(foreign)\\s+(procedure)\\s+([\\w_]+)\\s*\\(([^)]*)\\)?\\s*(returns)?\\s*(table)?\\s*\\(?([^)]*)?\\)?\\s*(//.*)?",
 				"captures": {
-					"1": { "name": "keyword.kf.types" },
-					"2": { "name": "entity.kf.name" },
-					"3": { "name": "entity.name.column" },
+					"1": { "name": "keyword.type.table.kuneiform" },
+					"2": { "name": "keyword.type.table.kuneiform" },
+					"3": { "name": "entity.name.function.table.kuneiform" },
 					"4": {
 						"patterns": [
 							{"include": "#fnArgs"}
 						]
 					},
-					"5": { "name": "entity.kf.modifiers" },
-					"6": { "name": "storage.kf.attributes" },
+					"5": { "name": "entity.name.operator.modifiers.kuneiform" },
+					"6": { "patterns": [{"include": "#tablemod"}]},
 					"7": {
 						"patterns": [
 							{"include": "#returnArgs"}
@@ -175,7 +174,7 @@
 				"match": "\\b([a-zA-Z_][a-zA-Z0-9_$]*)?\\s*\\b([a-zA-Z_][a-zA-Z0-9_]*)",
 				"captures": {
 					"1": { "name": "entity.name.attribute" },
-					"2": { "name": "storage.kf.types" }
+					"2": { "name": "support.type.kuneiform" }
 				}
 			}
 		]
@@ -186,7 +185,7 @@
 				"match": "\\b([a-zA-Z_][a-zA-Z0-9_]*)?\\s*\\b([a-zA-Z_][a-zA-Z0-9_]*)",
 				"captures": {
 					"1": { "name": "entity.name.attribute" },
-					"2": { "name": "storage.kf.types" }
+					"2": { "name": "support.type.kuneiform" }
 				}
 			}
 		]
@@ -197,12 +196,12 @@
 				"begin": "\\b(use)\\s+([a-zA-Z_][a-zA-Z0-9_]*)\\s*{",
 				"end": "}\\s*(as)\\s*([a-zA-Z_][a-zA-Z0-9_]*);",
 				"beginCaptures": {
-					"1": { "name": "keyword.kf.types"},
-					"2": { "name": "entity.kf.name" }
+					"1": { "name": "keyword.type.table.kuneiform"},
+					"2": { "name": "entity.name.function.table.kuneiform" }
 				},
 				"endCaptures": {
 					"1": { "name": "storage.kf.attributes" },
-					"2": { "name": "entity.name.table" }
+					"2": { "name":"support.type.datatypes.kuneiform" }
 				},
 				"patterns": [
 					{"include": "#comments"},
@@ -215,7 +214,7 @@
 		"patterns": [
 			{
 				"match": "\\b(text|int|blob|bool|uuid|uint256|decimal)\\b",
-				"name": "storage.kf.types"
+				"name": "support.type.datatypes.kuneiform"
 			}
 		]
 	},
@@ -223,7 +222,7 @@
 		"patterns": [
 			{
 				"match": "\\b(maxlen|minlen|unique|max|min|notnull|default|not null)\\b",
-				"name": "storage.kf.attributes"
+				"name": "storage.types.kuneiform"
 			}
 		]
 	},
@@ -243,7 +242,7 @@
 		"patterns": [
 			{
 				"match": "primary|primary key|pk|primary_key",
-				"name": "keyword.kf.pk"
+				"name": "token.debug-token.pk.kuneiform"
 			}
 		]
 	}, 
@@ -259,7 +258,7 @@
 		"patterns": [
 			{
 				"match": "\\b(public|private|view|owner|returns)\\b",
-				"name": "entity.kf.modifiers"
+				"name": "entity.name.operator.modifiers.kuneiform"
 			}
 		]
 	},
@@ -283,7 +282,7 @@
 		"patterns": [
 			{
 				"match": "\\b(return)\\b",
-				"name": "keyword.kf.return"
+				"name": "keyword.control.return.kuneiform"
 			}
 		]
 	},
@@ -291,16 +290,16 @@
 		"patterns": [
 			{
 				"match": "\\b(table)\\b",
-				"name": "storage.kf.attributes"
+				"name": "constant.character.set.regexp.table.kuneiform"
 			}
 		]
 	},
 	"functionCall": {
 		"patterns": [
 			{
-				"match": "\\b([a-zA-Z_][a-zA-Z0-9_]*).([a-zA-Z_][a-zA-Z0-9_]*)\\s*\\(",
+				"match": "\\b([a-zA-Z_][a-zA-Z0-9_]*)\\.([a-zA-Z_][a-zA-Z0-9_]*)\\s*\\(",
 				"captures": {
-					"2": { "name": "entity.name.function" }
+					"2": { "name": "entity.name.method.kuneiform" }
 				}
 			}
 		]
@@ -310,7 +309,7 @@
 			{
 				"match": "(@caller|@signer|@height|@txid)",
 				"captures": {
-					"1": { "name": "keyword.other.contextual.kuneiform" }
+					"1": { "name": "variable.language.contextual.kuneiform" }
 				}
 			}
 		]
@@ -326,8 +325,8 @@
 	"boolean": {
 		"patterns": [
 			{
-				"match": "\\b(true|false)\\b",
-				"name": "constant.boolean.kuneiform"
+				"match": "\\b(true|false|TRUE|FALSE|nil)\\b",
+				"name": "constant.language.boolean.kuneiform"
 			}
 		]
 	}
