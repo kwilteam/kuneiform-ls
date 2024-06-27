@@ -13,7 +13,7 @@
 	},
 	"icon": "images/kwil.png",
 	"activationEvents": [],
-	"main": "./client/client.js",
+	"main": "./dist/extension.js",
 	"contributes": {
 		"languages": [
 			{
@@ -45,13 +45,19 @@
 		}
 	},
 	"scripts": {
+		"compile": "node esbuild.js",
 		"build-kf-client": "npm install vscode-languageclient",
 		"build-kf-server": "cd server && ./build.sh",
 		"build": "npm run build-kf-server && npm run build-kf-client",
+		"package": "npm run build && node esbuild.js --production",
+		"vscode:prepublish": "npm run package",
 		"publish": "vsce publish"
 	},
 	"dependencies": {
-		"vsce": "^2.15.0",
 		"vscode-languageclient": "^9.0.1"
+	},
+	"devDependencies": {
+		"esbuild": "^0.21.5",
+		"vsce": "^2.15.0"
 	}
 }

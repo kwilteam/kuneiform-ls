@@ -1,0 +1,28 @@
+# Ignore all files except for the dist folder
+.vscode/**
+.gitignore
+contributing.md
+
+# Also include the following essential files
+!package.json
+!README.md
+!LICENSE
+!CHANGELOG.md
+
+# Optionally, include your language configuration files
+!server
+!syntaxes
+!client
+!dist
+
+!esbuild.js
+
+
+# Ignore node_modules except for production dependencies
+node_modules/**
+!node_modules/vscode-jsonrpc/**
+!node_modules/vscode-languageclient/**
+!node_modules/vscode-languageserver-protocol/**
+!node_modules/vscode-languageserver-types/**
+!node_modules/{minimatch,brace-expansion,concat-map,balanced-match}/**
+!node_modules/{semver,lru-cache,yallist}/**
