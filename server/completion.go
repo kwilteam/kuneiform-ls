@@ -34,7 +34,8 @@ func (l *lspHandler) getCompletionItems(r *parse.SchemaParseResult, pos int) []l
 
 	} else if !inTable && !inProcedures && !inActions && !inForeginProcedures {
 		// Not in any block, base level completions and modifiers, datatypes
-		return append(append(kfCompletionItems, datatypeCompletionItems...), modifierCompletionItems...)
+		// return append(append(kfCompletionItems, datatypeCompletionItems...), modifierCompletionItems...)
+		return kfCompletionItems
 
 	} else if inTable {
 		// datatypes, table completion items,

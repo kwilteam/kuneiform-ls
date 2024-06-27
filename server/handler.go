@@ -26,6 +26,7 @@ func (l *lspHandler) registerHandlers() {
 		"textDocument/didOpen":        l.handleDidOpen,
 		"textDocument/didChange":      l.handleDidChange,
 		"textDocument/didClose":       l.handleDidClose,
+		"textDocument/didSave":        l.handleDidSave,
 		"shutdown":                    l.handleShutdown,
 		"$/cancelRequest":             l.handleCancelRequest,
 		"textDocument/documentSymbol": l.handleDocumentSymbol,
@@ -102,6 +103,24 @@ func (l *lspHandler) handleDidChange(ctx context.Context, conn *jsonrpc2.Conn, r
 	}
 
 	_, diagnostics := l.validateKfDocument(docID, docText)
+	conn.Notify(ctx, "textDocument/publishDiagnostics", lsp.PublishDiagnosticsParams{
+		URI:         params.TextDocument.URI,
+		Diagnostics: diagnostics,
+	})
+}
+
+func (l *lspHandler) handleDidSave(ctx context.Context, conn *jsonrpc2.Conn, req *jsonrpc2.Request) {
+	params := lsp.DidSaveTextDocumentParams{}
+	json.Unmarshal(*req.Params, &params)
+
+	docID := string(params.TextDocument.URI)
+	doc, ok := l.docs[docID]
+	if !ok {
+		l.logger.Error("document not found: %s", slog.String("docID", docID))
+		return
+	}
+
+	_, diagnostics := l.validateKfDocument(docID, doc.rawKf)
 	conn.Notify(ctx, "textDocument/publishDiagnostics", lsp.PublishDiagnosticsParams{
 		URI:         params.TextDocument.URI,
 		Diagnostics: diagnostics,
