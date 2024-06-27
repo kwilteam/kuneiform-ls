@@ -2,7 +2,7 @@
 	"name": "kuneiform",
 	"displayName": "Kuneiform",
 	"description": "Language support for Kuneiform",
-	"version": "0.0.1",
+	"version": "0.0.2",
 	"publisher": "kwil-tools",
 	"repository": {
 		"type": "git",
@@ -47,9 +47,11 @@
 	"scripts": {
 		"build-kf-client": "npm install vscode-languageclient",
 		"build-kf-server": "cd server && ./build.sh",
-		"build": "npm run build-kf-server && npm run build-kf-client"
+		"build": "npm run build-kf-server && npm run build-kf-client",
+		"publish": "vsce publish"
 	},
 	"dependencies": {
+		"vsce": "^2.15.0",
 		"vscode-languageclient": "^9.0.1"
 	}
 }

@@ -8,66 +8,70 @@ var (
 	// database completion items
 	dbCompletionItems = []lsp.CompletionItem{
 		{
-			Label:            "database dbname;",
+			Label:            "database {}",
 			Kind:             lsp.CIKClass,
 			InsertText:       "database ${1:};",
 			InsertTextFormat: lsp.ITFSnippet,
+			Documentation:    "Database declaration\n\n database <name>;",
 		},
 	}
 
 	// base level kf completion items
 	kfCompletionItems = []lsp.CompletionItem{
 		{ // table declaration
-			Label:            "table name {columns..}",
+			Label:            "table {}",
 			Kind:             lsp.CIKClass,
 			InsertText:       "table ${1:} {\n\t${2:}\n}",
 			InsertTextFormat: lsp.ITFSnippet,
+			Documentation: `
+			
+			`,
 		},
 		{ // action declaration
-			Label:            "action name(params...) modifiers {body}",
+			Label:            "action () {}",
 			Kind:             lsp.CIKClass,
 			InsertText:       "action ${1:}(${2:}) ${3:} {\n\t${4:}\n}",
 			InsertTextFormat: lsp.ITFSnippet,
 		},
 		{ // use declaration
-			Label:            "use ext {data} as alias;",
+			Label:            "use {} as ",
 			Kind:             lsp.CIKClass,
 			InsertText:       "use ${1:} {\n\t${2:}\n} as ${3:};",
 			InsertTextFormat: lsp.ITFSnippet,
 		},
 		{ // procedure declaration without return type
-			Label:            "procedure name(params...) modifiers {body}",
+			Label:            "procedure () {}",
 			Kind:             lsp.CIKClass,
 			InsertText:       "procedure ${1:}(${2:}) ${3:}  {\n\t${4:}\n}",
 			InsertTextFormat: lsp.ITFSnippet,
 		},
 		{ // procedure declaration with return type
-			Label:            "procedure name(params...) modifiers returns (return_vals...) {body}",
+			Label:            "procedure ()  returns () {}",
 			Kind:             lsp.CIKClass,
 			InsertText:       "procedure ${1:}(${2:}) ${3:} returns (${4:}) {\n\t${5:}\n}",
 			InsertTextFormat: lsp.ITFSnippet,
 		},
 		{ // procedure declaration with table return type
-			Label:            "procedure name(params...) modifiers returns table(return_vals...) {body}",
+			Label:            "procedure () returns table() {}",
 			Kind:             lsp.CIKClass,
 			InsertText:       "procedure ${1:}(${2:}) ${3:} returns table(${4:}) {\n\t${5:}\n}",
 			InsertTextFormat: lsp.ITFSnippet,
 		},
 		{
 			// foreign procedure declaration without return type
-			Label:            "foreign procedure name(params...)",
+			Label:            "foreign procedure ()",
 			Kind:             lsp.CIKClass,
 			InsertText:       "foreign procedure ${1:}(${2:})",
 			InsertTextFormat: lsp.ITFSnippet,
 		},
 		{ // foreign procedure declaration
-			Label:            "foreign procedure name(params...) returns (return_types...)",
+			Label:            "foreign procedure () returns ()",
 			Kind:             lsp.CIKClass,
 			InsertText:       "foreign procedure ${1:}(${2:}) returns (${3:})",
 			InsertTextFormat: lsp.ITFSnippet,
 		},
 		{ // foreign procedure declaration  with table return type
-			Label:            "foreign procedure name(params...) returns table(return_types...)",
+			Label:            "foreign procedure () returns table()",
 			Kind:             lsp.CIKClass,
 			InsertText:       "foreign procedure ${1:}(${2:}) returns table(${3:})",
 			InsertTextFormat: lsp.ITFSnippet,
@@ -81,7 +85,7 @@ var (
 	// datatype completion items
 	datatypes             = []string{"text", "int", "uuid", "blob", "bool", "uint256", "decimal"} // decimal(precision, scale)
 	decimalCompletionItem = lsp.CompletionItem{
-		Label:            "decimal(precision, scale)",
+		Label:            "decimal(,)",
 		Kind:             lsp.CIKProperty,
 		InsertText:       "decimal(${1:}, ${2:})",
 		InsertTextFormat: lsp.ITFSnippet,
@@ -93,213 +97,210 @@ var (
 	tableKeywordsCompletionItems = getDefaultCompletionItems(tableKeywords)
 	tableCompletionItems         = append([]lsp.CompletionItem{
 		{ // maxlen() attribute
-			Label:            "maxlen(num)",
+			Label:            "maxlen()",
 			Kind:             lsp.CIKFunction,
 			InsertText:       "maxlen(${1:})",
 			InsertTextFormat: lsp.ITFSnippet,
 		},
 		{ // minlen() attribute
-			Label:            "minlen(num)",
+			Label:            "minlen()",
 			Kind:             lsp.CIKFunction,
 			InsertText:       "minlen(${1:})",
 			InsertTextFormat: lsp.ITFSnippet,
 		},
 		{ // max attribute
-			Label:            "max(num)",
+			Label:            "max()",
 			Kind:             lsp.CIKFunction,
 			InsertText:       "max(${1:})",
 			InsertTextFormat: lsp.ITFSnippet,
 		},
 		{ // min attribute
-			Label:            "min(num)",
+			Label:            "min()",
 			Kind:             lsp.CIKFunction,
 			InsertText:       "min(${1:})",
 			InsertTextFormat: lsp.ITFSnippet,
 		},
 		{ // foreign key declaration
-			Label:            "foreign key column references table(column)",
+			Label:            "foreign key  references ()",
 			Kind:             lsp.CIKSnippet,
 			InsertText:       "foreign key (${1:}) references ${2:}(${3:})",
 			InsertTextFormat: lsp.ITFSnippet,
 		},
 		{ // foreign key declaration with on delete|update action
-			Label:            "foreign key column references table(column) on delete|update action",
+			Label:            "foreign key  references () on delete|update action",
 			Kind:             lsp.CIKSnippet,
-			InsertText:       "foreign key (${1:}) references ${2:}(${3:}) on ${4:} ${5:}",
+			InsertText:       "foreign key (${1:}) references ${2:}(${3:}) on ${4|delete|update} ${5:}",
 			InsertTextFormat: lsp.ITFSnippet,
 		},
 		{ // index declaration
-			Label:            "#index_name index(columns...)",
-			Kind:             lsp.CIKClass,
-			InsertText:       "#${1:} index(${2:})",
-			InsertTextFormat: lsp.ITFSnippet,
+			Label:      "index",
+			Kind:       lsp.CIKKeyword,
+			InsertText: "index",
 		},
 		{ // indextype: primary declaration
-			Label:            "#index_name primary(columns...)",
-			Kind:             lsp.CIKClass,
-			InsertText:       "#${1:} primary(${2:})",
-			InsertTextFormat: lsp.ITFSnippet,
+			Label:      "primary",
+			Kind:       lsp.CIKKeyword,
+			InsertText: "primary",
 		},
 		{ // indextype: unique declaration
-			Label:            "#index_name unique(columns...)",
-			Kind:             lsp.CIKClass,
-			InsertText:       "#${1:} unique(${2:})",
-			InsertTextFormat: lsp.ITFSnippet,
+			Label:      "unique",
+			Kind:       lsp.CIKKeyword,
+			InsertText: "unique",
 		},
 	}, tableKeywordsCompletionItems...)
 
 	// SQL specific completions
 	sqlFunctionsCompletionItems = []lsp.CompletionItem{
 		{ // uuid generate function
-			Label:            "uuid_generate_v5(uuid, text)",
+			Label:            "uuid_generate_v5(, )",
 			Kind:             lsp.CIKFunction,
 			InsertText:       "uuid_generate_v5(${1:}, ${2:})",
 			InsertTextFormat: lsp.ITFSnippet,
 		},
 		{ // abs function
-			Label:            "abs(num)",
+			Label:            "abs()",
 			Kind:             lsp.CIKFunction,
 			InsertText:       "abs(${1:})",
 			InsertTextFormat: lsp.ITFSnippet,
 		},
 		// Encoding Functions
 		{
-			Label:            "encode(blob, text)",
+			Label:            "encode(, )",
 			Kind:             lsp.CIKFunction,
 			InsertText:       "encode(${1:}, ${2:})",
 			InsertTextFormat: lsp.ITFSnippet,
 		},
 		{
-			Label:            "decode(text, text)",
+			Label:            "decode(, )",
 			Kind:             lsp.CIKFunction,
 			InsertText:       "decode(${1:}, ${2:})",
 			InsertTextFormat: lsp.ITFSnippet,
 		},
 		// Digest Functions
 		{
-			Label:            "digest(text|blob, text)",
+			Label:            "digest(, )",
 			Kind:             lsp.CIKFunction,
 			InsertText:       "digest(${1:}, ${2:})",
 			InsertTextFormat: lsp.ITFSnippet,
 		},
 		// Array Functions
 		{
-			Label:            "array_append(any[], any)",
+			Label:            "array_append(,)",
 			Kind:             lsp.CIKFunction,
 			InsertText:       "array_append(${1:}, ${2:})",
 			InsertTextFormat: lsp.ITFSnippet,
 		},
 		{
-			Label:            "array_prepend(any, any[])",
+			Label:            "array_prepend(,)",
 			Kind:             lsp.CIKFunction,
 			InsertText:       "array_prepend(${1:}, ${2:})",
 			InsertTextFormat: lsp.ITFSnippet,
 		},
 		{
-			Label:            "array_cat(any[], any[])",
+			Label:            "array_cat(,)",
 			Kind:             lsp.CIKFunction,
 			InsertText:       "array_cat(${1:}, ${2:})",
 			InsertTextFormat: lsp.ITFSnippet,
 		},
 		{
-			Label:            "array_length(any[])",
+			Label:            "array_length()",
 			Kind:             lsp.CIKFunction,
 			InsertText:       "array_length(${1:})",
 			InsertTextFormat: lsp.ITFSnippet,
 		},
 		// String Functions
 		{
-			Label:            "bit_length(text)",
+			Label:            "bit_length()",
 			Kind:             lsp.CIKFunction,
 			InsertText:       "bit_length(${1:})",
 			InsertTextFormat: lsp.ITFSnippet,
 		},
 		{
-			Label:            "char_length(text)",
+			Label:            "char_length()",
 			Kind:             lsp.CIKFunction,
 			InsertText:       "char_length(${1:})",
 			InsertTextFormat: lsp.ITFSnippet,
 		},
 		{
-			Label:            "character_length(text)",
+			Label:            "character_length()",
 			Kind:             lsp.CIKFunction,
 			InsertText:       "character_length(${1:})",
 			InsertTextFormat: lsp.ITFSnippet,
 		},
 		{
-			Label:            "length(text)",
+			Label:            "length()",
 			Kind:             lsp.CIKFunction,
 			InsertText:       "length(${1:})",
 			InsertTextFormat: lsp.ITFSnippet,
 		},
 		{
-			Label:            "lower(text)",
+			Label:            "lower()",
 			Kind:             lsp.CIKFunction,
 			InsertText:       "lower(${1:})",
 			InsertTextFormat: lsp.ITFSnippet,
 		},
 		{
-			Label:            "lpad(text, int, text?)",
+			Label:            "lpad()",
 			Kind:             lsp.CIKFunction,
 			InsertText:       "lpad(${1:}, ${2:}, ${3:})",
 			InsertTextFormat: lsp.ITFSnippet,
 		},
 		{
-			Label:            "ltrim(text, text?)",
+			Label:            "ltrim()",
 			Kind:             lsp.CIKFunction,
 			InsertText:       "ltrim(${1:}, ${2:})",
 			InsertTextFormat: lsp.ITFSnippet,
 		},
 		{
-			Label:            "octet_length(text)",
+			Label:            "octet_length()",
 			Kind:             lsp.CIKFunction,
 			InsertText:       "octet_length(${1:})",
 			InsertTextFormat: lsp.ITFSnippet,
 		},
 		{
-			Label:            "overlay(text, text, int, int?)",
+			Label:            "overlay()",
 			Kind:             lsp.CIKFunction,
 			InsertText:       "overlay(${1:}, ${2:}, ${3:}, ${4:})",
 			InsertTextFormat: lsp.ITFSnippet,
 		},
 		{
-			Label:            "position(text, text)",
+			Label:            "position()",
 			Kind:             lsp.CIKFunction,
 			InsertText:       "position(${1:}, ${2:})",
 			InsertTextFormat: lsp.ITFSnippet,
 		},
 		{
-			Label:            "rpad(text, int, text?)",
+			Label:            "rpad()",
 			Kind:             lsp.CIKFunction,
 			InsertText:       "rpad(${1:}, ${2:}, ${3:})",
 			InsertTextFormat: lsp.ITFSnippet,
 		},
 		{
-			Label:            "rtrim(text, text?)",
+			Label:            "rtrim()",
 			Kind:             lsp.CIKFunction,
 			InsertText:       "rtrim(${1:}, ${2:})",
 			InsertTextFormat: lsp.ITFSnippet,
 		},
 		{
-			Label:            "substring(text, int, int?)",
+			Label:            "substring()",
 			Kind:             lsp.CIKFunction,
 			InsertText:       "substring(${1:}, ${2:}, ${3:})",
 			InsertTextFormat: lsp.ITFSnippet,
 		},
 		{
-			Label:            "trim(text, text?)",
+			Label:            "trim()",
 			Kind:             lsp.CIKFunction,
 			InsertText:       "trim(${1:}, ${2:})",
 			InsertTextFormat: lsp.ITFSnippet,
 		},
 		{
-			Label:            "upper(text)",
+			Label:            "upper()",
 			Kind:             lsp.CIKFunction,
 			InsertText:       "upper(${1:})",
 			InsertTextFormat: lsp.ITFSnippet,
 		},
 		{
-			Label:            "format(text, ...any)",
+			Label:            "format()",
 			Kind:             lsp.CIKFunction,
 			InsertText:       "format(${1:}, ${2:...})",
 			InsertTextFormat: lsp.ITFSnippet,
@@ -312,14 +313,14 @@ var (
 			InsertTextFormat: lsp.ITFSnippet,
 		},
 		{
-			Label:            "sum(int|decimal|uint256)",
+			Label:            "sum()",
 			Kind:             lsp.CIKFunction,
 			InsertText:       "sum(${1:})",
 			InsertTextFormat: lsp.ITFSnippet,
 		},
 		// Misc Functions
 		{
-			Label:            "error(text)",
+			Label:            "error()",
 			Kind:             lsp.CIKFunction,
 			InsertText:       "error(${1:})",
 			InsertTextFormat: lsp.ITFSnippet,
@@ -354,43 +355,43 @@ var (
 	sqlKeywordsCompletionItems = append(getDefaultCompletionItems(sqlKeywords),
 		[]lsp.CompletionItem{
 			{ // insert statement
-				Label:            "insert into table (columns...) values (values...)",
+				Label:            "insert into  () values ()",
 				Kind:             lsp.CIKClass,
 				InsertText:       "insert into ${1:} (${2:})\n\tvalues (${3:});",
 				InsertTextFormat: lsp.ITFSnippet,
 			},
 			{ // update statement
-				Label:            "update table set (column = value) where {condition}",
+				Label:            "update  set () where {}",
 				Kind:             lsp.CIKClass,
 				InsertText:       "update ${1:} set ${2:} = ${3:} where ${4:};",
 				InsertTextFormat: lsp.ITFSnippet,
 			},
-			{ // select statement
-				Label:            "select (columns...) from table where {condition}",
+			{ // select stateme
+				Label:            "select () from  where {}",
 				Kind:             lsp.CIKClass,
 				InsertText:       "select ${1:} from ${2:} where ${3:}",
 				InsertTextFormat: lsp.ITFSnippet,
 			},
 			{ // delete statement
-				Label:            "delete from table where {condition}",
+				Label:            "delete from  where {}",
 				Kind:             lsp.CIKClass,
 				InsertText:       "delete from ${1:} where ${2:};",
 				InsertTextFormat: lsp.ITFSnippet,
 			},
 			{ // on conflict clause
-				Label:            "on conflict (column) do {update|nothing}",
+				Label:            "on conflict () do {update|nothing}",
 				Kind:             lsp.CIKClass,
-				InsertText:       "on conflict (${1:}) do ${2:};",
+				InsertText:       "on conflict (${1:}) do ${2|update|nothing};",
 				InsertTextFormat: lsp.ITFSnippet,
 			},
 			{ // conflict clause
-				Label:            "conflict (column) do {update|nothing}",
+				Label:            "conflict () do {}",
 				Kind:             lsp.CIKClass,
-				InsertText:       "conflict (${1:}) do ${2:};",
+				InsertText:       "conflict (${1:}) do ${2|update|nothing};",
 				InsertTextFormat: lsp.ITFSnippet,
 			},
 			{ // do update clause
-				Label:            "do update set {column} = {value}",
+				Label:            "do update set {} = {}",
 				Kind:             lsp.CIKClass,
 				InsertText:       "do update set ${1:} = ${2:};",
 				InsertTextFormat: lsp.ITFSnippet,
