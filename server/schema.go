@@ -8,6 +8,10 @@ import (
 )
 
 // Responsible for collecting required information from the parsed schema
+const (
+	actionOffset    = 7  // len(action) + 1
+	procedureOffset = 10 // len(procedure) + 1
+)
 
 type kfDocs struct {
 	rawKf        string
@@ -239,4 +243,39 @@ func extractAndDeduplicateMethodParams(params []string, body string) []string {
 	}
 
 	return params
+}
+
+func getTokenPosition(uri lsp.DocumentURI, r *parse.SchemaParseResult, token string) []lsp.Location {
+	var locations []lsp.Location
+	if r == nil || r.Schema == nil || r.SchemaInfo == nil {
+		return locations
+	}
+
+	// Check if token exists
+	block, ok := r.SchemaInfo.Blocks[token]
+	if !ok {
+		return locations
+	}
+
+	// action or procedure?
+	offset := procedureOffset
+	if _, ok := r.ParsedActions[token]; ok {
+		offset = actionOffset
+	}
+
+	locations = append(locations, lsp.Location{
+		URI: uri,
+		Range: lsp.Range{
+			Start: lsp.Position{
+				Line:      block.StartLine - 1,
+				Character: block.StartCol + offset,
+			},
+			End: lsp.Position{
+				Line:      block.EndLine - 1,
+				Character: block.EndCol,
+			},
+		},
+	})
+
+	return locations
 }

@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"log/slog"
 	"strings"
+	"unicode"
 
 	"github.com/kwilteam/kwil-db/parse"
 	"github.com/sourcegraph/go-lsp"
@@ -31,6 +32,7 @@ func (l *lspHandler) registerHandlers() {
 		"$/cancelRequest":             l.handleCancelRequest,
 		"textDocument/documentSymbol": l.handleDocumentSymbol,
 		"textDocument/completion":     l.handleCompletion,
+		"textDocument/definition":     l.handleDefinition,
 		// "textDocument/semanticTokens/full": l.handleSemanticTokens,
 		// "completionItem/resolve":           l.handleCompletionItemResolve,
 	}
@@ -60,6 +62,7 @@ func (l *lspHandler) handleInitialize(ctx context.Context, conn *jsonrpc2.Conn, 
 				TriggerCharacters: triggerKeywords,
 			},
 			// HoverProvider: true,
+			DefinitionProvider: true,
 		},
 	}
 	conn.Reply(ctx, req.ID, &res)
@@ -147,6 +150,37 @@ func (l *lspHandler) handleDocumentSymbol(ctx context.Context, conn *jsonrpc2.Co
 	// json.Unmarshal(*req.Params, &params)
 }
 
+func (l *lspHandler) handleDefinition(ctx context.Context, conn *jsonrpc2.Conn, req *jsonrpc2.Request) {
+	params := lsp.TextDocumentPositionParams{}
+	err := json.Unmarshal(*req.Params, &params)
+	if err != nil {
+		l.logger.Error("error unmarshalling definition params: %v", err)
+		return
+	}
+
+	l.logger.Debug("Definition params: ", slog.Any("", params))
+
+	docID := string(params.TextDocument.URI)
+	doc, ok := l.docs[docID]
+	if !ok {
+		l.logger.Error("document not found: %s", slog.String("docID", docID))
+		return
+	}
+
+	token, err := l.getToken(doc.rawKf, params.Position.Line, params.Position.Character)
+	if err != nil {
+		l.logger.Error("Error getting token at position: ", err)
+		return
+	}
+
+	l.logger.Debug("Definition offset: ", slog.String("token", token))
+
+	loc := getTokenPosition(params.TextDocument.URI, doc.parsedSchema, token)
+	l.logger.Debug("Definition location: ", slog.Any("", loc))
+
+	conn.Reply(ctx, req.ID, loc)
+}
+
 func (l *lspHandler) handleCompletion(ctx context.Context, conn *jsonrpc2.Conn, req *jsonrpc2.Request) {
 	params := lsp.CompletionParams{}
 	err := json.Unmarshal(*req.Params, &params)
@@ -214,6 +248,7 @@ func (l *lspHandler) validateKfDocument(uri string, text string) (*parse.SchemaP
 	return res, getDiagnostics(res)
 }
 
+// getOffset returns the offset of the given line and column in the text
 func (l *lspHandler) getOffset(text string, line, col int) (int, error) {
 	lines := strings.Split(text, "\n")
 	if line > len(lines) {
@@ -225,4 +260,40 @@ func (l *lspHandler) getOffset(text string, line, col int) (int, error) {
 		offset += len(lines[i]) + 1
 	}
 	return offset + col, nil
+}
+
+func (l *lspHandler) getToken(text string, line, col int) (string, error) {
+	lines := strings.Split(text, "\n")
+	if line > len(lines) {
+		return "", fmt.Errorf("line %d is out of bounds,  max: %d , overall text: %s", line, len(lines), text)
+	}
+
+	textLine := lines[line]
+	if col > len(textLine) {
+		return "", fmt.Errorf("column %d is out of bounds,  max: %d , line text: %s", col, len(textLine), textLine)
+	}
+
+	// Find the token
+	// token should only contain alphanumeric characters and underscores
+	// token should not contain any other characters
+	start := col
+	for start > 0 && isTokenChar(rune(textLine[start-1])) {
+		start--
+	}
+
+	end := col
+	for end < len(textLine) && isTokenChar(rune(textLine[end])) {
+		end++
+	}
+
+	if start < end {
+		return textLine[start:end], nil
+	}
+
+	return "", fmt.Errorf("no token found at line %d, col %d", line, col)
+}
+
+// isTokenChar checks if the character is alphanumeric or an underscore
+func isTokenChar(ch rune) bool {
+	return unicode.IsLetter(ch) || unicode.IsDigit(ch) || ch == '_'
 }

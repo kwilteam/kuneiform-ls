@@ -2,7 +2,7 @@
 	"name": "kuneiform",
 	"displayName": "Kuneiform",
 	"description": "Language support for Kuneiform",
-	"version": "0.0.2",
+	"version": "0.0.1",
 	"publisher": "kwil-tools",
 	"repository": {
 		"type": "git",
