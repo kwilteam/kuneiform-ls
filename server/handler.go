@@ -154,7 +154,7 @@ func (l *lspHandler) handleDefinition(ctx context.Context, conn *jsonrpc2.Conn, 
 	params := lsp.TextDocumentPositionParams{}
 	err := json.Unmarshal(*req.Params, &params)
 	if err != nil {
-		l.logger.Error("error unmarshalling definition params: %v", err)
+		l.logger.Error("error unmarshalling definition params: %v", slog.String("err", err.Error()))
 		return
 	}
 
@@ -169,7 +169,7 @@ func (l *lspHandler) handleDefinition(ctx context.Context, conn *jsonrpc2.Conn, 
 
 	token, err := l.getToken(doc.rawKf, params.Position.Line, params.Position.Character)
 	if err != nil {
-		l.logger.Error("Error getting token at position: ", err)
+		l.logger.Error("Error getting token at position: ", slog.String("err", err.Error()))
 		return
 	}
 
@@ -185,7 +185,7 @@ func (l *lspHandler) handleCompletion(ctx context.Context, conn *jsonrpc2.Conn, 
 	params := lsp.CompletionParams{}
 	err := json.Unmarshal(*req.Params, &params)
 	if err != nil {
-		l.logger.Error("error unmarshalling completion params: %v", err)
+		l.logger.Error("error unmarshalling completion params: ", slog.String("err", err.Error()))
 		return
 	}
 
@@ -204,7 +204,7 @@ func (l *lspHandler) handleCompletion(ctx context.Context, conn *jsonrpc2.Conn, 
 
 	offset, err := l.getOffset(doc.rawKf, params.Position.Line, params.Position.Character)
 	if err != nil {
-		l.logger.Error("Error getting completionTriggerCharacter offset: ", err)
+		l.logger.Error("Error getting completionTriggerCharacter offset: ", slog.String("err", err.Error()))
 		return
 	}
 
