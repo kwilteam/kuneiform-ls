@@ -8,7 +8,7 @@ var (
 	// database completion items
 	dbCompletionItems = []lsp.CompletionItem{
 		{
-			Label:            "database {}",
+			Label:            "database",
 			Kind:             lsp.CIKClass,
 			InsertText:       "database ${1:};",
 			InsertTextFormat: lsp.ITFSnippet,
@@ -83,7 +83,7 @@ var (
 	modifierCompletionItems   = getDefaultCompletionItems(modifierAndContextualKeys)
 
 	// datatype completion items
-	datatypes             = []string{"text", "int", "uuid", "blob", "bool", "uint256", "decimal"} // decimal(precision, scale)
+	datatypes             = []string{"text", "int", "uuid", "blob", "bool", "uint256"} // decimal(precision, scale)
 	decimalCompletionItem = lsp.CompletionItem{
 		Label:            "decimal(,)",
 		Kind:             lsp.CIKProperty,

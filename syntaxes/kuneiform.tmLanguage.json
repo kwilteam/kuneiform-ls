@@ -12,7 +12,9 @@
 	{"include": "#sqlKeywords"},
 	{"include": "#contextual"},
 	{"include": "#flowcontrol"},
-	{"include": "#tablemod"}
+	{"include": "#tablemod"},
+	{"include": "#sqlFunctions"},
+	{"include": "#numbers"}
   ],
   "repository": {
 	"type_declarations": {
@@ -255,9 +257,9 @@
 	"contextual": {
 		"patterns": [
 			{
-				"match": "(@caller|@signer|@height|@txid)",
+				"match": "(@caller|@signer|@height|@txid|@kgw)",
 				"captures": {
-					"1": { "name": "variable.language.contextual.kuneiform" }
+					"1": { "name": "entity.name.operator.contextual.kuneiform" }
 				}
 			}
 		]
@@ -283,6 +285,14 @@
 			{
 				"name": "keyword.control.kuneiform",
 				"match": "(?<!\\$)\\b(if|else|elseif|for|in|break|continue|then|return|next|IF|ELSE|ELSEIF|FOR|IN|BREAK|CONTINUE|THEN|RETURN|NEXT)\\b"
+			}
+		]
+	},
+	"sqlFunctions": {
+		"patterns": [
+			{
+				"name": "entity.name.function.sql.kuneiform",
+				"match": "(?<!\\$)\\b(uuid_generate_v5|abs|encode|decode|digest|array_append|array_prepend|array_cat|array_length|bit_length|char_length|character_length|length|lower|lpad|ltrim|octet_length|overlay|position|rpad|rtrim|substring|trim|upper|format|sum|error)\\("
 			}
 		]
 	}

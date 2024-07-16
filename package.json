@@ -46,10 +46,10 @@
 	},
 	"scripts": {
 		"compile": "node esbuild.js",
-		"build-kf-client": "npm install vscode-languageclient",
 		"build-kf-server": "cd server && ./build.sh",
+		"build-kf-client": "rm -rf dist && npm install vscode-languageclient && node esbuild.js --production",
 		"build": "npm run build-kf-server && npm run build-kf-client",
-		"vscode:prepublish": "npm run build && node esbuild.js --production",
+		"vscode:prepublish": "npm run build ",
 		"package": "vsce package",
 		"publish": "vsce publish"
 	},
