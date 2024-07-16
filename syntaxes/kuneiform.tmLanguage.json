@@ -1,300 +1,265 @@
 {
-  "scopeName": "source.kuneiform",
-  "fileTypes": ["kf"],
-  "patterns": [
-	{"include": "#type_declarations" },
-	{"include": "#pkRefs"},
-	{"include": "#comments"},
-	{"include": "#colTypes"},
-	{"include": "#attributes"},
-	{"include": "#strings" },
-	{"include": "#modifiers"},
-	{"include": "#sqlKeywords"},
-	{"include": "#contextual"},
-	{"include": "#flowcontrol"},
-	{"include": "#tablemod"},
-	{"include": "#sqlFunctions"},
-	{"include": "#numbers"}
-  ],
-  "repository": {
-	"type_declarations": {
-		"patterns": [
-			{"include": "#database"},
-			{"include": "#table"},
-			{"include": "#actions"},
-			{"include": "#procedures"},
-			{"include": "#extensions"},
-			{"include": "#fprocedures"},
-			{"include": "#columns"}
-		]
-	},
-	"database": {
-		"patterns": [
-			{
-				"match": "\\b(database)\\s+([a-zA-Z_][a-zA-Z0-9_]*)\\s*;",
-				"captures": {
-					"1": { "name": "keyword.type.database.kuneiform" },
-					"2": { "name": "entity.name.type.database.kuneiform" }
-				}
-			}
-		]
-	},
-	"table": {
-        "patterns": [
-            {
-                "begin": "\\b(table)\\s+([a-zA-Z_][a-zA-Z0-9_]*)\\s*\\{",
-                "end": "\\}",
-                "beginCaptures": {
-                    "1": { "name": "keyword.type.table.kuneiform" },
-                    "2": { "name": "entity.name.function.table.kuneiform" }
-                },
-                "patterns": [
-                    { "include": "#comments"},
-                    {
-                        "match": "(#[a-zA-Z_][a-zA-Z0-9_]*)\\s+(unique|index|primary)\\s*.*?(//.*)?",
-                        "captures": {
-                            "1": { "name": "entity.name.operator.index.kuneiform" },
-                            "2": { "name": "support.type.index.kuneiform" },
-							"3": { "name": "comment.line.double-slash.kuneiform" }
-                        }
-                    },
-					{
-						"match": "\\b(foreign key|fk|foreign_key)\\s*\\(([a-zA-Z_][a-zA-Z0-9_]*)\\)\\s+(references)\\s+([a-zA-Z_][a-zA-Z0-9_]*)(\\s*\\(([a-zA-Z_][a-zA-Z0-9_]*)\\)\\s*(on\\s+update|on\\s+delete)?(\\s+[^;/,]*)?\\s*)?,?(\\s*//.*)?",
-						"captures": {
-							"1": { "name": "storage.foreignkey.types.kuneiform"  },
-							"2": { "name": "entity.name.column.kuneiform" },
-							"3": { "name": "support.type.references.kuneiform" },
-							"4": { "name": "entity.name.table.fk.kueniform" },
-							"6": { "name": "entity.name.column.refs.kuneiform" },
-							"7": { "name": "storage.kf.attributes.fk.kuneiform" },
-							"8": { "name": "entity.name.fk.actions.kuneiform" },
-							"9": { "name": "comment.line.double-slash.kuneiform" }
-						}
-					},
-					{
-                        "match": "\\b([a-zA-Z_][a-zA-Z0-9_]*)\\s+([a-zA-Z_][a-zA-Z0-9_]*)\\s*(\\(\\s*\\d*,\\d*\\s*\\))?(primary key|primary|pk|primary_key)?(\\s*\\b[^;/,]*)?\\s*?(\\s*,\\s*)?(//.*)?$",
-                        "captures": {
-                            "1": { "name": "entity.name.column" },
-							"2": { "name": "support.type.kuneiform" },
-							"3": {
-								"patterns": [
-									{"include": "#numbers"}
-								]
-							},
-                            "4": { "name": "storage.types.pk.kuneiform" },
-                            "5": { 
-								"patterns": [
-									{"include": "#attributes"},
-									{"include": "#boolean"},
-									{"include": "#numbers"}
-								]
-							},
-							"6": { "name": "delimiter.comma" },
-							"7": { "name": "comment.line.double-slash.kuneiform" }
-                        }
-                    }
-                ]
-            }
-        ]
-    },
-	"actions": {
-		"name": "action.kuneiform",
-		"patterns": [
-			{
-				"match": "\\b(action)\\s*([\\w_]+)\\s*\\(",
-				"captures": {
-					"1": { "name": "keyword.type.action.kuneiform" },
-					"2": { "name": "entity.name.function.action.kuneiform" }
-				}
-			}
-		]
-	},
-	"procedures": {
-		"patterns": [
-			{
-				"match": "\\b(procedure)\\s*([\\w_]+)\\s*\\(",
-				"captures": {
-					"1": { "name": "keyword.type.procedure.kuneiform" },
-					"2": { "name": "entity.name.function.procedure.kuneiform" }
-				}
-			}
-		]
-	},
-	"fprocedures":{
-		"patterns": [
-			{
-				"name": "fprocedure.kuneiform",
-				"match": "\\b(foreign)\\s+(procedure)\\s+([\\w_]+)\\s*\\(",
-				"captures": {
-					"1": { "name": "keyword.type.foreign.kuneiform" },
-					"2": { "name": "keyword.type.procedure.kuneiform" },
-					"3": { "name": "entity.name.function.fprocedure.kuneiform" }
-				}
-			}
-		]
-	},
-	"extensions": {
-		"patterns": [
-			{
-				"begin": "\\b(use)\\s+([a-zA-Z_][a-zA-Z0-9_]*)\\s*{",
-				"end": "}\\s*(as)\\s*([a-zA-Z_][a-zA-Z0-9_]*);",
-				"beginCaptures": {
-					"1": { "name": "keyword.type.table.kuneiform"},
-					"2": { "name": "entity.name.function.table.kuneiform" }
-				},
-				"endCaptures": {
-					"1": { "name": "storage.kf.attributes" },
-					"2": { "name":"support.type.datatypes.kuneiform" }
-				},
-				"contentName": "extension.initializers.kuneiform"
-			}
-		]
-	},
-	"colTypes": {
-		"patterns": [
-			{
-				"match": "(?<!\\$)\\b(text|int|blob|bool|uuid|uint256|decimal)\\b",
-				"name": "support.type.datatypes.kuneiform"
-			}
-		]
-	},
-	"attributes": {
-		"patterns": [
-			{
-				"match": "(?<!\\$)\\b(maxlen|minlen|unique|max|min|notnull|default|not null)\\b",
-				"name": "storage.types.attributes.kuneiform"
-			}
-		]
-	},
-	"comments": {
-		"patterns": [
-			{
-				"match": "//\\s*TODO:.*$",
-				"name": "comment.TODO.kuneiform"
-			},
-			{
-				"match": "//.*$",
-				"name": "comment.line.double-slash.kuneiform"
-			},
-			{
-				"begin": "(/\\*)",
-				"end": "(\\*/)",
-				"beginCaptures": {
-					"1": { "name": "comment.block.kuneiform" }
-				},
-				"endCaptures": {
-					"1": { "name": "comment.block.kuneiform" }
-				},
-				"patterns": [
-					{
-						"match": "[^*]+",
-						"name": "comment.block.kuneiform"
-					},
-					{
-						"match": "\\*+[^/*]",
-						"name": "comment.block.kuneiform"
+	"scopeName": "source.kuneiform",
+	"fileTypes": ["kf"],
+	"patterns": [
+		{"include": "#type_declarations" },
+		{"include": "#pkRefs"},
+		{"include": "#comments"},
+		{"include": "#colTypes"},
+		{"include": "#attributes"},
+		{"include": "#strings" },
+		{"include": "#modifiers"},
+		{"include": "#sqlKeywords"},
+		{"include": "#contextual"},
+		{"include": "#flowcontrol"},
+		{"include": "#tablemod"},
+		{"include": "#sqlFunctions"},
+		{"include": "#numbers"},
+		{"include": "#indexTypes"}
+	],
+	"repository": {
+		"type_declarations": {
+			"patterns": [
+				{"include": "#database"},
+				{"include": "#table"},
+				{"include": "#actions"},
+				{"include": "#procedures"},
+				{"include": "#extensions"},
+				{"include": "#fprocedures"},
+				{"include": "#columns"}
+			]
+		},
+		"database": {
+			"patterns": [
+				{
+					"match": "\\b(database)\\s+([a-zA-Z_][a-zA-Z0-9_]*)\\s*;",
+					"captures": {
+						"1": { "name": "keyword.type.database.kuneiform" },
+						"2": { "name": "entity.name.type.database.kuneiform" }
 					}
-				]			
-			}
-		]
-	},
-	"pkRefs": {
-		"patterns": [
-			{
-				"match": "(?<!\\$)\\b(primary|primary key|pk|primary_key)",
-				"name": "storage.types.pk.kuneiform"
-			}
-		]
-	}, 
-	"strings": {
-        "patterns": [
-			{
-				"match": "'([^'])*'",
-				"name": "string.quoted.single.kuneiform"
-			}
-        ]
-    },
-	"modifiers": {
-		"patterns": [
-			{
-				"match": "(?<!\\$)\\b(public|private|view|owner|returns)\\b",
-				"name": "entity.name.operator.modifiers.kuneiform"
-			}
-		]
-	},
-	"sqlKeywords": {
-		"patterns": [
-			{
-				"name": "keyword.type.sql.kuneiform",
-				"match": "(?<!\\$)\\b(?:ABORT|ADD|ALL|AND|AS|ASC|BETWEEN|BY|CASE|COLLATE|COMMIT|CONFLICT|CREATE|CROSS|DEFAULT|DELETE|DESC|DISTINCT|ELSE|END|ESCAPE|EXCEPT|EXISTS|FAIL|FROM|FULL|GLOB|GROUP|HAVING|IGNORE|INDEXED|INNER|INSERT|INTERSECT|INTO|IS|ISNULL|JOIN|LEFT|LIKE|LIMIT|MATCH|NATURAL|NOT|NULL|OF|OFFSET|ON|OR|ORDER|OUTER|RAISE|REGEXP|REPLACE|RETURNING|RIGHT|ROLLBACK|SELECT|SET|THEN|UNION|UPDATE|USING|VALUES|WHEN|WHERE|WITH|TRUE|FALSE|NULLS|FIRST|LAST|FILTER|GROUPS|DO|NOTHING|abort|add|all|and|as|asc|between|by|case|collate|commit|conflict|create|cross|default|delete|desc|distinct|end|escape|except|exists|fail|from|full|glob|group|having|ignore|indexed|inner|insert|intersect|into|is|isnull|join|left|like|limit|match|natural|not|null|of|offset|on|or|order|outer|raise|regexp|replace|returning|right|rollback|select|set|then|union|update|using|values|when|where|with|true|false|nulls|first|last|filter|groups|do|nothing|delete|update)\\b"
-			  }
-		]
-	},
-	"operators": {
-		"patterns": [
-        {
-          "name": "keyword.operator.kuneiform",
-          "match": "[=><!~?:&|+\\-*^%]+"
-        }
-      ]
-	},
-	"return": {
-		"patterns": [
-			{
-				"match": "(?<!\\$)\\b(return)\\b",
-				"name": "keyword.control.return.kuneiform"
-			}
-		]
-	},
-	"tablemod": {
-		"patterns": [
-			{
-				"match": "(?<!\\$)\\b(table)",
-				"name": "keyword.type.return.table.kuneiform"
-			}
-		]
-	},
-	"contextual": {
-		"patterns": [
-			{
-				"match": "(@caller|@signer|@height|@txid|@kgw)",
-				"captures": {
-					"1": { "name": "entity.name.operator.contextual.kuneiform" }
 				}
-			}
-		]
-	},
-	"numbers": {
-		"patterns": [
-			{
-				"match": "\\b(\\d+)\\b",
-				"name": "constant.numeric.kuneiform"
-			}
-		]
-	},
-	"boolean": {
-		"patterns": [
-			{
-				"match": "(?<!\\$)\\b(true|false|TRUE|FALSE|nil)\\b",
-				"name": "constant.language.boolean.kuneiform"
-			}
-		]
-	},
-	"flowcontrol": {
-		"patterns": [
-			{
-				"name": "keyword.control.kuneiform",
-				"match": "(?<!\\$)\\b(if|else|elseif|for|in|break|continue|then|return|next|IF|ELSE|ELSEIF|FOR|IN|BREAK|CONTINUE|THEN|RETURN|NEXT)\\b"
-			}
-		]
-	},
-	"sqlFunctions": {
-		"patterns": [
-			{
-				"name": "entity.name.function.sql.kuneiform",
-				"match": "(?<!\\$)\\b(uuid_generate_v5|abs|encode|decode|digest|array_append|array_prepend|array_cat|array_length|bit_length|char_length|character_length|length|lower|lpad|ltrim|octet_length|overlay|position|rpad|rtrim|substring|trim|upper|format|sum|error)\\("
-			}
-		]
-	}
-  }
-}	
+			]
+		},
+		"table": {
+			"patterns": [
+				{
+					"match": "\\b(table)\\s*([\\w_]+)\\s*\\{",
+					"captures": {
+						"1": { "name": "keyword.type.table.kuneiform" },
+						"2": { "name": "entity.name.function.table.kuneiform" }
+					}
+				}
+			]
+		},
+		"actions": {
+			"name": "action.kuneiform",
+			"patterns": [
+				{
+					"match": "\\b(action)\\s*([\\w_]+)\\s*\\(",
+					"captures": {
+						"1": { "name": "keyword.type.action.kuneiform" },
+						"2": { "name": "entity.name.function.action.kuneiform" }
+					}
+				}
+			]
+		},
+		"procedures": {
+			"patterns": [
+				{
+					"match": "\\b(procedure)\\s*([\\w_]+)\\s*\\(",
+					"captures": {
+						"1": { "name": "keyword.type.procedure.kuneiform" },
+						"2": { "name": "entity.name.function.procedure.kuneiform" }
+					}
+				}
+			]
+		},
+		"fprocedures":{
+			"patterns": [
+				{
+					"name": "fprocedure.kuneiform",
+					"match": "\\b(foreign)\\s+(procedure)\\s+([\\w_]+)\\s*\\(",
+					"captures": {
+						"1": { "name": "keyword.type.foreign.kuneiform" },
+						"2": { "name": "keyword.type.procedure.kuneiform" },
+						"3": { "name": "entity.name.function.fprocedure.kuneiform" }
+					}
+				}
+			]
+		},
+		"extensions": {
+			"patterns": [
+				{
+					"begin": "\\b(use)\\s+([a-zA-Z_][a-zA-Z0-9_]*)\\s*{",
+					"end": "}\\s*(as)\\s*([a-zA-Z_][a-zA-Z0-9_]*);",
+					"beginCaptures": {
+						"1": { "name": "keyword.type.table.kuneiform"},
+						"2": { "name": "entity.name.function.table.kuneiform" }
+					},
+					"endCaptures": {
+						"1": { "name": "storage.kf.attributes" },
+						"2": { "name":"support.type.datatypes.kuneiform" }
+					},
+					"contentName": "extension.initializers.kuneiform"
+				}
+			]
+		},
+		"colTypes": {
+			"patterns": [
+				{
+					"match": "(?<!\\$)\\b(text|int|blob|bool|uuid|uint256|decimal)\\b",
+					"name": "support.type.datatypes.kuneiform"
+				}
+			]
+		},
+		"indexTypes": {
+			"patterns": [
+				{
+					"match": "(#[a-zA-Z_][a-zA-Z0-9_]*)\\s+(unique|index|primary)",
+					"captures": {
+						"1": { "name": "entity.name.operator.index.kuneiform" },
+						"2": { "name": "support.type.indextypes.kuneiform" }
+					}
+				}
+			]
+		},
+		"attributes": {
+			"patterns": [
+				{
+					"match": "(?<!\\$)\\b(maxlen|minlen|unique|max|min|notnull|default|not null)\\b",
+					"name": "storage.types.attributes.kuneiform"
+				}
+			]
+		},
+		"comments": {
+			"patterns": [
+				{
+					"match": "//\\s*TODO:.*$",
+					"name": "comment.TODO.kuneiform"
+				},
+				{
+					"match": "//.*$",
+					"name": "comment.line.double-slash.kuneiform"
+				},
+				{
+					"begin": "(/\\*)",
+					"end": "(\\*/)",
+					"beginCaptures": {
+						"1": { "name": "comment.block.kuneiform" }
+					},
+					"endCaptures": {
+						"1": { "name": "comment.block.kuneiform" }
+					},
+					"patterns": [
+						{
+							"match": "[^*]+",
+							"name": "comment.block.kuneiform"
+						},
+						{
+							"match": "\\*+[^/*]",
+							"name": "comment.block.kuneiform"
+						}
+					]			
+				}
+			]
+		},
+		"pkRefs": {
+			"patterns": [
+				{
+					"match": "(?<!\\$)\\b(primary_key|primary key|primary|pk)",
+					"name": "storage.types.pk.kuneiform"
+				}
+			]
+		}, 
+		"strings": {
+			"patterns": [
+				{
+					"match": "'([^'])*'",
+					"name": "string.quoted.single.kuneiform"
+				}
+			]
+		},
+		"modifiers": {
+			"patterns": [
+				{
+					"match": "(?<!\\$)\\b(public|private|view|owner|returns)\\b",
+					"name": "entity.name.operator.modifiers.kuneiform"
+				}
+			]
+		},
+		"sqlKeywords": {
+			"patterns": [
+				{
+					"name": "keyword.type.sql.kuneiform",
+					"match": "(?<!\\$)\\b(?:ABORT|ADD|ALL|AND|AS|ASC|BETWEEN|BY|CASE|COLLATE|COMMIT|CONFLICT|CREATE|CROSS|DEFAULT|DELETE|DESC|DISTINCT|ELSE|END|ESCAPE|EXCEPT|EXISTS|FAIL|FROM|FULL|GLOB|GROUP|HAVING|IGNORE|INDEXED|INNER|INSERT|INTERSECT|INTO|IS|ISNULL|JOIN|LEFT|LIKE|LIMIT|MATCH|NATURAL|NOT|NULL|OF|OFFSET|ON|OR|ORDER|OUTER|RAISE|REGEXP|REPLACE|RETURNING|RIGHT|ROLLBACK|SELECT|SET|THEN|UNION|UPDATE|USING|VALUES|WHEN|WHERE|WITH|TRUE|FALSE|NULLS|FIRST|LAST|FILTER|GROUPS|DO|NOTHING|abort|add|all|and|as|asc|between|by|case|collate|commit|conflict|create|cross|default|delete|desc|distinct|end|escape|except|exists|fail|from|full|glob|group|having|ignore|indexed|inner|insert|intersect|into|is|isnull|join|left|like|limit|match|natural|not|null|of|offset|on|or|order|outer|raise|regexp|replace|returning|right|rollback|select|set|then|union|update|using|values|when|where|with|true|false|nulls|first|last|filter|groups|do|nothing|delete|update)\\b"
+				}
+			]
+		},
+		"operators": {
+			"patterns": [
+				{
+					"name": "keyword.operator.kuneiform",
+					"match": "[=><!~?:&|+\\-*^%]+"
+				}
+			]
+		},
+		"return": {
+			"patterns": [
+				{
+					"match": "(?<!\\$)\\b(return)\\b",
+					"name": "keyword.control.return.kuneiform"
+				}
+			]
+		},
+		"tablemod": {
+			"patterns": [
+				{
+					"match": "(?<!\\$)\\b(table)",
+					"name": "keyword.type.return.table.kuneiform"
+				}
+			]
+		},
+		"contextual": {
+			"patterns": [
+				{
+					"match": "(@caller|@signer|@height|@txid|@kgw)",
+					"captures": {
+						"1": { "name": "entity.name.operator.contextual.kuneiform" }
+					}
+				}
+			]
+		},
+		"numbers": {
+			"patterns": [
+				{
+					"match": "\\b(\\d+)\\b",
+					"name": "constant.numeric.kuneiform"
+				}
+			]
+		},
+		"boolean": {
+			"patterns": [
+				{
+					"match": "(?<!\\$)\\b(true|false|TRUE|FALSE|nil)\\b",
+					"name": "constant.language.boolean.kuneiform"
+				}
+			]
+		},
+		"flowcontrol": {
+			"patterns": [
+				{
+					"name": "keyword.control.kuneiform",
+					"match": "(?<!\\$)\\b(if|else|elseif|for|in|break|continue|then|return|next|IF|ELSE|ELSEIF|FOR|IN|BREAK|CONTINUE|THEN|RETURN|NEXT)\\b"
+				}
+			]
+		},
+		"sqlFunctions": {
+			"patterns": [
+				{
+					"name": "entity.name.function.sql.kuneiform",
+					"match": "(?<!\\$)\\b(uuid_generate_v5|abs|encode|decode|digest|array_append|array_prepend|array_cat|array_length|bit_length|char_length|character_length|length|lower|lpad|ltrim|octet_length|overlay|position|rpad|rtrim|substring|trim|upper|format|sum|error)\\("
+				}
+			]
+		}
+	}	
+}
