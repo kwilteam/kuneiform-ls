@@ -2,7 +2,7 @@
 
 ## Package
 
-To generate a vsix extension image, run either of the following commands:
+To generate a vsix extension image, run one of the following commands:
 
 ```bash
 npm run package
@@ -11,8 +11,6 @@ npm run package
 or
 
 ```bash
-cd server && ./build.sh
-cd ../
 vsce package
 ```
 
@@ -20,16 +18,16 @@ You can directly upload the vsix image into your vscode extensions and start usi
 
 ## Publish
 
-To publish the extension to the marketplace, run the following command:
+To publish the extension to the marketplace, run one of the following commands:
 
 ```bash
-vsce publish
+npm run publish
 ```
 
 or
 
 ```bash
-npm run publish
+vsce publish
 ```
 
 To publish the extension manually, you can directly upload the vsix image into the [VScode Marketplace Publisher Page]{<https://marketplace.visualstudio.com/manage>}.
