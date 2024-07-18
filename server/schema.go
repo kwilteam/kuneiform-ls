@@ -48,7 +48,7 @@ func getDiagnostics(r *parse.SchemaParseResult) []lsp.Diagnostic {
 				},
 			},
 			Severity: lsp.Error,
-			Message:  err.Message,
+			Message:  err.Err.Error() + ": " + err.Message,
 		}
 		diagnosis = append(diagnosis, d)
 	}

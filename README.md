@@ -11,3 +11,5 @@ Kuneiform VS Code extension provides language support for the Kuneiform language
 - Diagnostics: Syntax errors are highlighted in the editor, and you can see the error message by hovering over the error. You can also see the error message in the `Problems` panel.
 
 This extension uses a [kuneiform language server](https://github.com/kwilteam/kuneiform-ls.git) to provide the above features.
+
+![Goto Definition2](./images/gotoDefinition.gif)
