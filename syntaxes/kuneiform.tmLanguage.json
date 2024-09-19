@@ -90,8 +90,8 @@
 		"extensions": {
 			"patterns": [
 				{
-					"begin": "\\b(use)\\s+([a-zA-Z_][a-zA-Z0-9_]*)\\s*{",
-					"end": "}\\s*(as)\\s*([a-zA-Z_][a-zA-Z0-9_]*);",
+					"begin": "\\b(use)\\s+([a-zA-Z_][a-zA-Z0-9_]*)\\s*",
+					"end": "\\s*(as)\\s*([a-zA-Z_][a-zA-Z0-9_]*);",
 					"beginCaptures": {
 						"1": { "name": "keyword.type.table.kuneiform"},
 						"2": { "name": "entity.name.function.table.kuneiform" }
@@ -222,7 +222,7 @@
 		"contextual": {
 			"patterns": [
 				{
-					"match": "(@caller|@signer|@height|@txid|@kgw)",
+					"match": "(@caller|@signer|@height|@txid|@kgw|@block_timestamp)",
 					"captures": {
 						"1": { "name": "entity.name.operator.contextual.kuneiform" }
 					}

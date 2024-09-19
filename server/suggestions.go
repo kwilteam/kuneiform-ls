@@ -79,7 +79,7 @@ var (
 	}
 
 	// modifier and contextual completion items
-	modifierAndContextualKeys = []string{"@caller", "@signer", "@txid", "@height", "@action", "@dataset", "public", "private", "view", "owner", "returns"}
+	modifierAndContextualKeys = []string{"@caller", "@signer", "@txid", "@height", "@action", "@dataset", "@block_timestamp", "public", "private", "view", "owner", "returns"}
 	modifierCompletionItems   = getDefaultCompletionItems(modifierAndContextualKeys)
 
 	// datatype completion items

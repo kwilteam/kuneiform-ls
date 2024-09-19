@@ -14,3 +14,13 @@ All notable changes to the "kuneiform" extension will be documented in this file
 ## v0.0.3
 
 - detailed diagnostics
+
+## v0.0.4
+
+- support for @block_timestamp contextual variable
+- backend parser updates
+
+## v0.0.5
+
+- fixed issues with syntax highlighting for extensions
+- parser updates
