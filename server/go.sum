@@ -12,14 +12,12 @@ github.com/gorilla/websocket v1.4.1 h1:q7AeDBpnBk8AogcD4DSag/Ukw/KV+YhzLj2bP5HvK
 github.com/gorilla/websocket v1.4.1/go.mod h1:YR8l580nyteQvAITg2hZ9XVh4b55+EU/adAjf1fMHhE=
 github.com/holiman/uint256 v1.3.1 h1:JfTzmih28bittyHM8z360dCjIA9dbPIBlcTI6lmctQs=
 github.com/holiman/uint256 v1.3.1/go.mod h1:EOMSn4q6Nyt9P6efbI3bueV4e1b3dGlUCXeiRV4ng7E=
-github.com/kwilteam/kwil-db/core v0.2.1-0.20240731194240-2214f45a672a h1:V6PZDOyvBt3uSP2lPpL0/O3pi+va60yU3DdJTciaBFo=
-github.com/kwilteam/kwil-db/core v0.2.1-0.20240731194240-2214f45a672a/go.mod h1:IZX/X9cPUg1Ppet0MCsBV/Kot6JCikiITcahzSp2i3c=
-github.com/kwilteam/kwil-db/parse v0.2.1-0.20240731194240-2214f45a672a h1:uYFZNJM27BkSKe4TXUxnO5bqx0zDxjeiQkJy1dA4Jgk=
-github.com/kwilteam/kwil-db/parse v0.2.1-0.20240731194240-2214f45a672a/go.mod h1:n1ej0JFAQdPWLgGaW4k2/f2Cofv+6YhQqsIqDI2DFdM=
+github.com/kwilteam/kwil-db/core v0.3.0 h1:exeFwTfv7vLvrIb5pDvk5gmHsXsQEYDRWiaYn9s2LXQ=
+github.com/kwilteam/kwil-db/core v0.3.0/go.mod h1:rTXHWgWannGuOaR0vK2o7/kBXu5opLWZOqlAhLSRP1Y=
+github.com/kwilteam/kwil-db/parse v0.3.0 h1:j4aot6iW1A1JrDgsG1R3Od7zY2wx311DXEEAyG6eW38=
+github.com/kwilteam/kwil-db/parse v0.3.0/go.mod h1:juw5CvmJrQdZkdczzessfRhxq3k7H6H2KYhMrRSFehk=
 github.com/lib/pq v1.10.7 h1:p7ZhMD+KsSRozJr34udlUrhboJwWAgCg34+/ZZNvZZw=
 github.com/lib/pq v1.10.7/go.mod h1:AlVN5x4E4T544tWzH6hKfbfQvm3HdbOxrmggDNAPY9o=
-github.com/pkg/errors v0.9.1 h1:FEBLx1zS214owpjy7qsBeixbURkuhQAwrK5UwLGTwt4=
-github.com/pkg/errors v0.9.1/go.mod h1:bwawxfHBFNV+L2hUp1rHADufV3IMtnDRdf1r5NINEl0=
 github.com/pmezard/go-difflib v1.0.1-0.20181226105442-5d4384ee4fb2 h1:Jamvg5psRIccs7FGNTlIRMkT8wgtp5eCXdBlqhYGL6U=
 github.com/pmezard/go-difflib v1.0.1-0.20181226105442-5d4384ee4fb2/go.mod h1:iKH77koFhYxTK1pcRnkKkqfTogsbg7gZNVY4sRDYZ/4=
 github.com/sourcegraph/go-lsp v0.0.0-20240223163137-f80c5dd31dfd h1:Dq5WSzWsP1TbVi10zPWBI5LKEBDg4Y1OhWEph1wr5WQ=
@@ -32,5 +30,3 @@ golang.org/x/exp v0.0.0-20240719175910-8a7402abbf56 h1:2dVuKD2vS7b0QIHQbpyTISPd0
 golang.org/x/exp v0.0.0-20240719175910-8a7402abbf56/go.mod h1:M4RDyNAINzryxdtnbRXRL/OHtkFuWGRjvuhBJpk2IlY=
 gopkg.in/yaml.v3 v3.0.1 h1:fxVm/GzAzEWqLHuvctI91KS9hhNmmWOoWu0XTYJS7CA=
 gopkg.in/yaml.v3 v3.0.1/go.mod h1:K4uyk7z7BCEPqu6E+C64Yfv1cQ7kz7rIZviUmN+EgEM=
-gotest.tools v2.2.0+incompatible h1:VsBPFP1AI068pPrMxtb/S8Zkgf9xEmTLJjfM+P5UIEo=
-gotest.tools v2.2.0+incompatible/go.mod h1:DsYFclhRJ6vuDpmuTbkuFWG+y2sxOXAzmJt81HFBacw=

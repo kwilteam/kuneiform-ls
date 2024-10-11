@@ -222,7 +222,7 @@
 		"contextual": {
 			"patterns": [
 				{
-					"match": "(@caller|@signer|@height|@txid|@kgw|@block_timestamp)",
+					"match": "(@caller|@signer|@height|@txid|@kgw|@block_timestamp|@foreign_caller|@authenticator)",
 					"captures": {
 						"1": { "name": "entity.name.operator.contextual.kuneiform" }
 					}
@@ -257,7 +257,7 @@
 			"patterns": [
 				{
 					"name": "entity.name.function.sql.kuneiform",
-					"match": "(?<!\\$)\\b(uuid_generate_v5|abs|encode|decode|digest|array_append|array_prepend|array_cat|array_length|bit_length|char_length|character_length|length|lower|lpad|ltrim|octet_length|overlay|position|rpad|rtrim|substring|trim|upper|format|sum|error)\\("
+					"match": "(?<!\\$)\\b(uuid_generate_v5|abs|encode|decode|digest|array_append|array_prepend|array_cat|array_length|bit_length|char_length|character_length|length|lower|lpad|ltrim|octet_length|overlay|position|rpad|rtrim|substring|trim|upper|format|sum|error|parse_unix_timestamp|format_unix_timestamp|to_timestamp|notice|array_remove|array_agg)\\("
 				}
 			]
 		}

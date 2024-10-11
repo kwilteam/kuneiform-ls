@@ -2,7 +2,7 @@
 	"name": "kuneiform",
 	"displayName": "Kuneiform",
 	"description": "Language support for Kuneiform",
-	"version": "0.0.5",
+	"version": "0.0.6",
 	"publisher": "kwil-tools",
 	"repository": {
 		"type": "git",
@@ -58,6 +58,6 @@
 	},
 	"devDependencies": {
 		"esbuild": "^0.21.5",
-		"vsce": "^2.15.0"
+		"vsce": "^1.97.0"
 	}
 }

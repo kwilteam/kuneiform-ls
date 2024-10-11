@@ -24,3 +24,10 @@ All notable changes to the "kuneiform" extension will be documented in this file
 
 - fixed issues with syntax highlighting for extensions
 - parser updates
+
+## v0.0.6
+
+- support for newly added contextual variables, @authenticator, @foreign_caller.
+- support for newly added timestamp functions, `parse_unix_timestamp` and `format_unix_timestamp`.
+- support for newly added array functions such as `array_append` and `array_agg`.
+- syntax highlighting support for `notice` function.

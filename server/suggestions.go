@@ -79,8 +79,9 @@ var (
 	}
 
 	// modifier and contextual completion items
-	modifierAndContextualKeys = []string{"@caller", "@signer", "@txid", "@height", "@action", "@dataset", "@block_timestamp", "public", "private", "view", "owner", "returns"}
-	modifierCompletionItems   = getDefaultCompletionItems(modifierAndContextualKeys)
+	modifierAndContextualKeys = []string{"@caller", "@signer", "@txid", "@height", "@action", "@dataset", "@block_timestamp",
+		"@foreign_caller", "@authenticator", "public", "private", "view", "owner", "returns"}
+	modifierCompletionItems = getDefaultCompletionItems(modifierAndContextualKeys)
 
 	// datatype completion items
 	datatypes             = []string{"text", "int", "uuid", "blob", "bool", "uint256"} // decimal(precision, scale)
@@ -208,6 +209,18 @@ var (
 			InsertText:       "array_length(${1:})",
 			InsertTextFormat: lsp.ITFSnippet,
 		},
+		{
+			Label:            "array_remove(,)",
+			Kind:             lsp.CIKFunction,
+			InsertText:       `array_remove(${1:}, ${2:})`,
+			InsertTextFormat: lsp.ITFSnippet,
+		},
+		{
+			Label:            "array_agg()",
+			Kind:             lsp.CIKFunction,
+			InsertText:       `array_agg(${1:})`,
+			InsertTextFormat: lsp.ITFSnippet,
+		},
 		// String Functions
 		{
 			Label:            "bit_length()",
@@ -323,6 +336,18 @@ var (
 			Label:            "error()",
 			Kind:             lsp.CIKFunction,
 			InsertText:       "error(${1:})",
+			InsertTextFormat: lsp.ITFSnippet,
+		},
+		{
+			Label:            "parse_unix_timestamp(,)",
+			Kind:             lsp.CIKFunction,
+			InsertText:       "parse_unix_timestamp(${1:}, ${2:})",
+			InsertTextFormat: lsp.ITFSnippet,
+		},
+		{
+			Label:            "format_unix_timestamp(,)",
+			Kind:             lsp.CIKFunction,
+			InsertText:       "format_unix_timestamp(${1:}, ${2:})",
 			InsertTextFormat: lsp.ITFSnippet,
 		},
 	}
